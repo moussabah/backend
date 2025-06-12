@@ -8,7 +8,7 @@ import springboot.projetfinal.enums.Status;
 
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
 
     @Id

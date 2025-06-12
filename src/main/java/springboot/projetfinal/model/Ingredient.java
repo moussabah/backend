@@ -16,9 +16,15 @@ public class Ingredient {
 
     private String unit; // Exemple : "g", "ml", "pcs"
 
-    @ManyToMany(mappedBy = "ingredients")
-    private Collection<Item> items;
-    
+	@ManyToMany
+	@JoinTable(
+			name = "ingredient_item",
+			joinColumns = @JoinColumn(name = "ingredient_id"),
+			inverseJoinColumns = @JoinColumn(name = "item_id")
+	)
+	private Collection<Item> items;
+
+
 	@Version
 	private int version;
 

@@ -2,8 +2,6 @@ package springboot.projetfinal.model;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
 public class OrderLine {
 
@@ -18,8 +16,8 @@ public class OrderLine {
 	private Item item;
 
 	@ManyToOne
-	@JoinColumn(name="Order_ID")
-	private Order Order;
+	@JoinColumn(name="ORDER_ID")
+	private Order order;
 
 	@Version
 	private int version;
@@ -58,10 +56,10 @@ public class OrderLine {
 		this.item = item;
 	}
 	public Order getOrder() {
-		return Order;
+		return order;
 	}
 	public void setOrder(Order Order) {
-		this.Order = Order;
+		this.order = Order;
 	}
 
 	public double getLine_price() {
@@ -81,11 +79,18 @@ public class OrderLine {
 
 	public void addQuantity(int quantity) {
 		this.quantity += quantity;
-		this.line_price = item.getPrice() * quantity;
+		this.line_price = this.item.getPrice() * this.quantity;
 	}
+
 	public void removeQuantity(int quantity) {
-		this.quantity -= quantity;
-		this.line_price = item.getPrice() * quantity;
+		if (this.quantity - quantity >= 0) {
+			this.quantity -= quantity;
+			this.line_price = this.item.getPrice() * this.quantity;
+		} else {
+			// Gérer le cas où la quantité devient négative si nécessaire
+			this.quantity = 0;
+			this.line_price = 0;
+		}
 	}
 
 
@@ -99,7 +104,7 @@ public class OrderLine {
 	@Override
 	public String toString() {
 		return "LigneOrder [id=" + id + ", quantity=" + quantity + ", line_price=" + line_price + ", item="
-				+ item + ", Order=" + Order + "]";
+				+ item + ", Order=" + order + "]";
 	}
 
 }
