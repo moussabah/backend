@@ -1,8 +1,10 @@
 package springboot.projetfinal.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springboot.projetfinal.model.Address;
+import springboot.projetfinal.model.JsonViews;
 import springboot.projetfinal.service.AddressService;
 
 import java.util.List;
@@ -16,6 +18,7 @@ public class AddressRestController {
     AddressService service;
 
     @GetMapping
+    @JsonView(JsonViews.Common.class)
     public List<Address> findAll() {
         return service.findAll();
     }

@@ -1,7 +1,10 @@
 package springboot.projetfinal.service;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springboot.projetfinal.model.Address;
 import springboot.projetfinal.model.Customer;
+import springboot.projetfinal.repo.AddressRepository;
 import springboot.projetfinal.repo.CustomerRepository;
 
 import java.util.List;
@@ -31,4 +34,5 @@ public class CustomerService {
     public Customer update(Customer customer) {
         return repository.save(customer);
     }
+
 }

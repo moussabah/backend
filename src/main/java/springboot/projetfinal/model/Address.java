@@ -1,5 +1,6 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,24 +8,34 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViews.Common.class)
     private long id;
+    @JsonView(JsonViews.Common.class)
     private int streetNumber;
+    @JsonView(JsonViews.Common.class)
     private String street;
+    @JsonView(JsonViews.Common.class)
     private String city;
+    @JsonView(JsonViews.Common.class)
     private String postalCode;
+    @JsonView(JsonViews.Common.class)
     private String country;
 
     @ManyToOne
     @JoinColumn(name="CUSTOMER_ID")
+    @JsonView(JsonViews.AddressWithCustomer.class)
     private Customer customer;
 
     @Version
     private int version;
 
+    // Constructeur par défaut
     public Address() {
         super();
     }
-    public Address(String street, String city, String postalCode,  Customer customer, int streetNumber, String country) {
+
+    // Constructeur avec paramètres
+    public Address(String street, String city, String postalCode, Customer customer, int streetNumber, String country) {
         super();
         this.street = street;
         this.city = city;
@@ -34,33 +45,43 @@ public class Address {
         this.country = country;
     }
 
+    // Getters et Setters
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
+
     public String getStreet() {
         return street;
     }
+
     public void setStreet(String street) {
         this.street = street;
     }
+
     public String getCity() {
         return city;
     }
+
     public void setCity(String city) {
         this.city = city;
     }
+
     public String getPostalCode() {
         return postalCode;
     }
+
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
+
     public Customer getCustomer() {
         return customer;
     }
+
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
@@ -84,9 +105,12 @@ public class Address {
     public int getVersion() {
         return version;
     }
+
     public void setVersion(int version) {
         this.version = version;
     }
+
+    // Méthode toString() pour afficher les informations d'une adresse
     @Override
     public String toString() {
         return "Address [id=" + id + ", street=" + street + ", city=" + city + ", postalCode=" + postalCode + "]";

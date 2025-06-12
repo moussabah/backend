@@ -1,4 +1,5 @@
 package springboot.projetfinal.model;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -7,16 +8,19 @@ import java.util.Collection;
 @Entity
 @DiscriminatorValue("Customer")
 public class Customer extends Authentification{
-
+    @JsonView(JsonViews.Common.class)
     private String firstname;
+    @JsonView(JsonViews.Common.class)
     private String lastname;
-
+    @JsonView(JsonViews.Common.class)
     private int phone;
+    @JsonView(JsonViews.Common.class)
     private String photo;
 
     @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Order> orders = new ArrayList<>();
 
+    @JsonView(JsonViews.CustomerWithAddress.class)
     @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Address> addresses = new ArrayList<>();
 
@@ -45,8 +49,24 @@ public class Customer extends Authentification{
         this.reservations=reservations;
     }
 
-    public String getName() {return firstname;}
-    public void setName(String firstname) {this.firstname = firstname;}
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public Collection<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(Collection<Item> items) {
+        this.items = items;
+    }
+
+    public String getFirstname() {return firstname;}
+    public void setFirstname(String firstname) {this.firstname = firstname;}
 
     public String getLastname() {return lastname;}
     public void setLastname(String lastname) {this.lastname = lastname;}
@@ -68,6 +88,27 @@ public class Customer extends Authentification{
         if (!orders.contains(order)) {
             orders.add(order);
             order.setCustomer(this);
+        }
+    }
+
+    public void removeOrder(Order order) {
+        if (orders.contains(order)) {
+            orders.remove(order);
+            order.setCustomer(null);
+        }
+    }
+
+    public void addAddress(Address address) {
+        if (!addresses.contains(address)) {
+            addresses.add(address);
+            address.setCustomer(this);
+        }
+    }
+
+    public void removeAddress(Address address) {
+        if (addresses.contains(address)) {
+            addresses.remove(address);
+            address.setCustomer(null);
         }
     }
 
