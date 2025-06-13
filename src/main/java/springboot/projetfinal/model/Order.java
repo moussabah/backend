@@ -15,7 +15,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(JsonViews.Common.class)
-    private long id;
+    private int id;
     @JsonView(JsonViews.Common.class)
     private double totalPrice;
 
@@ -46,11 +46,11 @@ public class Order {
         this.status = Status.INCOMPLETE;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

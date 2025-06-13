@@ -15,7 +15,7 @@ public class Item {
 
     @Id
     @JsonView(JsonViews.Common.class)
-    private Long ref;
+    private int ref;
     @JsonView(JsonViews.Common.class)
     private String name;
     @JsonView(JsonViews.Common.class)
@@ -51,7 +51,7 @@ public class Item {
         super();
     }
 
-    public Item(long ref,String name, double price, String description,
+    public Item(int ref,String name, double price, String description,
                 String pathImg, int rate, int nbRate, Category category) {
         super();
         this.ref = ref;
@@ -63,7 +63,7 @@ public class Item {
         this.nbRate = nbRate;
         this.category = category;
     }
-    public Item(long ref,String name, double price, String description, String pathImg, Category category) {
+    public Item(int ref,String name, double price, String description, String pathImg, Category category) {
         super();
         this.ref = ref;
         this.name = name;
@@ -73,7 +73,7 @@ public class Item {
         this.category = category;
     }
 
-    public Item(long ref,String name, double price, String description, String pathImg) {
+    public Item(int ref,String name, double price, String description, String pathImg) {
         super();
         this.ref = ref;
         this.name = name;
@@ -82,7 +82,7 @@ public class Item {
         this.pathImg = pathImg;
     }
 
-    public Item(long ref,String name, double price, String description) {
+    public Item(int ref,String name, double price, String description) {
         super();
         this.ref = ref;
         this.name = name;
@@ -90,7 +90,7 @@ public class Item {
         this.description = description;
     }
 
-    public Item(long ref,String name, double price) {
+    public Item(int ref,String name, double price) {
         super();
         this.ref = ref;
         this.name = name;
@@ -101,10 +101,10 @@ public class Item {
         return name;
     }
 
-    public long getRef() {
+    public int getRef() {
         return ref;
     }
-    public void setRef(Long ref) {
+    public void setRef(int ref) {
         this.ref = ref;
     }
 
@@ -224,7 +224,7 @@ public class Item {
         }
     }
 
-    public void removeIngredient(Long ingredientId) {
+    public void removeIngredient(int ingredientId) {
         Ingredient ingredient = new Ingredient();
     }
 

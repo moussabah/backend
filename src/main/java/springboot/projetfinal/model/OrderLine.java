@@ -9,7 +9,7 @@ public class OrderLine {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonView(JsonViews.Common.class)
-	private long id;
+	private int id;
 	@JsonView(JsonViews.Common.class)
 	private int quantity;
 	@JsonView(JsonViews.Common.class)
@@ -37,10 +37,10 @@ public class OrderLine {
 		this.quantity = quantity;
 		this.line_price = item.getPrice() * quantity;
 	}
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public int getQuantity() {
