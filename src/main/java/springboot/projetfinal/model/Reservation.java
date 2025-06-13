@@ -1,21 +1,30 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import springboot.projetfinal.enums.Slot;
 
 import java.util.Date;
 
 @Entity
+@Table(name = "reservations")
 public class Reservation {
 
     @Id
+    @JsonView(JsonViews.Common.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @JsonView(JsonViews.ReservationWithSlot.class)
     private Slot slot;
+    @JsonView(JsonViews.Common.class)
     private int nbPersons;
-    private Date reservationDate;
-    private boolean confirmed;
+    @JsonView(JsonViews.Common.class)
+    private Date date;
+
+    @ManyToOne
+    @JoinColumn(name="CUSTOMER_ID")
+    @JsonView(JsonViews.ReservationWithCustomer.class)
+    private Customer customer;
 
     @Version
     private int version;
@@ -23,17 +32,26 @@ public class Reservation {
         super();
     }
 
-    public Reservation(Slot slot, int nbPersons, Date reservationDate, boolean confirmed) {
+    public Reservation(Customer customer, Slot slot, int nbPersons, Date date) {
         super();
         this.slot = slot;
         this.nbPersons = nbPersons;
-        this.reservationDate = reservationDate;
-        this.confirmed = confirmed;
+        this.date = date;
+        this.customer = customer;
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer cannot be null");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Slot cannot be null");
+        }
     }
 
-    @ManyToOne
-    @JoinColumn(name="CUSTOMER_ID")
-    private Customer customer;
+    public Reservation(Slot slot, int nbPersons, Date date) {
+        super();
+        this.slot = slot;
+        this.nbPersons = nbPersons;
+        this.date = date;
+    }
 
     public Slot getSlot() {
         return slot;
@@ -51,27 +69,19 @@ public class Reservation {
         this.nbPersons = nbPersons;
     }
 
-    public Date getReservationDate() {
-        return reservationDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setReservationDate(Date reservationDate) {
-        this.reservationDate = reservationDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Customer getCustomer() {
         return customer;
     }
-
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public boolean isConfirmed() {
-        return confirmed;
-    }
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
     }
 
     public long getId() {
@@ -87,16 +97,13 @@ public class Reservation {
         this.version = version;
     }
 
-
-
     @Override
     public String toString() {
         return "Reservation{" +
                 "id=" + id +
                 ", slot=" + slot +
                 ", nbPersons=" + nbPersons +
-                ", reservationDate=" + reservationDate +
-                ", customer=" + customer +
+                ", date=" + date +
                 '}';
     }
 }

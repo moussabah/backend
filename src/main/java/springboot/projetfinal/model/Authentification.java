@@ -3,22 +3,22 @@ package springboot.projetfinal.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "authentification")
+@Table(name = "authentifications")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name ="TYPE", discriminatorType = DiscriminatorType.STRING)
 public abstract class Authentification {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private int id;
 	@Column(unique = true)
 	private String login;
 	private String password;
 	@Version
 	private int version;
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getLogin() {
@@ -47,8 +47,10 @@ public abstract class Authentification {
 		this.login = login;
 		this.password = password;
 	}
+
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", login=" + login + ", password=" + password + "]";
+		return "User [id=" + id + ", login=" + login +"]";
 	}
 }

@@ -3,6 +3,7 @@ package springboot.projetfinal.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import springboot.projetfinal.enums.Status;
 
@@ -13,15 +14,21 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViews.Common.class)
     private long id;
+    @JsonView(JsonViews.Common.class)
     private double totalPrice;
+
+    @JsonView(JsonViews.OrderWithStatus.class)
     private Status status;
 
     @OneToMany(mappedBy="order",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView(JsonViews.OrderWithOrderLines.class)
     private Collection<OrderLine> order_lines = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name="CUSTOMER_ID")
+    @JsonView(JsonViews.OrderWithCustomer.class)
     private Customer customer;
 
     @Version
@@ -30,6 +37,13 @@ public class Order {
     public Order() {
         super();
         this.totalPrice = 0;
+        this.status = Status.INCOMPLETE;
+    }
+
+    public Order(Customer customer) {
+        super();
+        this.customer = customer;
+        this.status = Status.INCOMPLETE;
     }
 
     public long getId() {
@@ -105,20 +119,6 @@ public class Order {
         }
     }
 
-//    public void updateLine(OrderLine line){
-//        if (order_lines.contains(line)) {
-//            for (OrderLine orderLine : order_lines)
-//                if (orderLine.getItem().getRef() == line.getItem().getRef()) {
-//                    orderLine.setQuantity(line.getQuantity());
-//                    orderLine.setLine_Price(line.getLine_Price());
-//                    this.totalPrice = this.totalPrice - orderLine.getLine_Price() + line.getLine_Price();
-//                    break;
-//                }
-//            order_lines.remove(line);
-//            line.setOrder(this);
-//        }
-//    }
-
     public void removeLine(OrderLine line){
         if (order_lines.contains(line)) {
             order_lines.remove(line);
@@ -128,9 +128,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order [id=" + id + ", order_lines=" + order_lines + ", customer=" + customer + "]";
+        return "Order{" + "id=" + id + ", totalPrice=" + totalPrice + ", status=" + status +
+                ", order_lines=" + order_lines + ", customer=" + customer + '}';
     }
-
-
-
 }

@@ -1,5 +1,6 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,16 +8,21 @@ public class OrderLine {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(JsonViews.Common.class)
 	private long id;
+	@JsonView(JsonViews.Common.class)
 	private int quantity;
+	@JsonView(JsonViews.Common.class)
 	private double line_price;
 
 	@ManyToOne
 	@JoinColumn(name= "ITEM_ID")
+	@JsonView(JsonViews.OrderLineWithItem.class)
 	private Item item;
 
 	@ManyToOne
 	@JoinColumn(name="ORDER_ID")
+	@JsonView(JsonViews.OrderLineWithOrder.class)
 	private Order order;
 
 	@Version
@@ -82,6 +88,8 @@ public class OrderLine {
 		this.line_price = this.item.getPrice() * this.quantity;
 	}
 
+
+
 	public void removeQuantity(int quantity) {
 		if (this.quantity - quantity >= 0) {
 			this.quantity -= quantity;
@@ -92,7 +100,6 @@ public class OrderLine {
 			this.line_price = 0;
 		}
 	}
-
 
 	@Override
 	public boolean equals(Object o) {

@@ -1,25 +1,29 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 @Entity
 @DiscriminatorValue("Employee")
 public class Employee extends Authentification{
-    private boolean active;
 
-    private String name;
-    private String surname;
+    @JsonView(JsonViews.Common.class)
+    private boolean active;
+    @JsonView(JsonViews.Common.class)
+    private String firstname;
+    @JsonView(JsonViews.Common.class)
+    private String lastname;
 
     @Version
     private int version;
     public Employee() {
         super();
     }
-    public Employee(String login, String password, boolean active, String name, String surname) {
+    public Employee(String login, String password, String firstname, String lastname,boolean active) {
         super(login, password);
         this.active = active;
-        this.name = name;
-        this.surname = surname;
+        this.firstname = firstname;
+        this.lastname = lastname;
     }
 
     public Employee(String login, String password, boolean active) {
@@ -35,18 +39,20 @@ public class Employee extends Authentification{
         this.active = active;
     }
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getSurname() {
-        return surname;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
     public int getVersion() {
         return version;
@@ -55,10 +61,23 @@ public class Employee extends Authentification{
         this.version = version;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + "Admin [active=" + active + "]";
+    public String getFullName() {
+        return firstname + " " + lastname;
+    }
+    public void setFullName(String fullName) {
+        String[] names = fullName.split(" ");
+        if (names.length == 2) {
+            this.firstname = names[0];
+            this.lastname = names[1];
+        }
     }
 
-
+    @Override
+    public String toString() {
+        return "Employee{" +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                "active=" + active +
+                '}';
+    }
 }

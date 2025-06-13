@@ -18,7 +18,7 @@ public class AddressService {
         return repository.findAll();
     }
 
-    public Optional<Address> findById(long id) {
+    public Optional<Address> findById(int id) {
         return repository.findById(id);
     }
 
@@ -26,7 +26,7 @@ public class AddressService {
         return repository.save(address);
     }
 
-    public void deleteById(long id) {
+    public void deleteById(int id) {
         repository.deleteById(id);
     }
     public Address update(Address address) {

@@ -1,8 +1,9 @@
 package springboot.projetfinal.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import springboot.projetfinal.enums.Status;
+import springboot.projetfinal.model.JsonViews;
 import springboot.projetfinal.model.Order;
 import springboot.projetfinal.service.OrderService;
 
@@ -10,13 +11,14 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderRestController {
 
     @Autowired
     OrderService service;
 
-    @GetMapping
+    @GetMapping("")
+    @JsonView(JsonViews.Common.class)
     public List<Order> findAll() {
         return service.findAll();
     }

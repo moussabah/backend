@@ -1,7 +1,9 @@
 package springboot.projetfinal.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springboot.projetfinal.model.JsonViews;
 import springboot.projetfinal.model.Reservation;
 import springboot.projetfinal.service.ReservationService;
 
@@ -9,13 +11,14 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/reservation")
+@RequestMapping("/reservations")
 public class ReservationRestController {
 
     @Autowired
     ReservationService service;
 
-    @GetMapping
+    @GetMapping("")
+    @JsonView(JsonViews.Common.class)
     public List<Reservation> findAll() {
         return service.findAll();
     }

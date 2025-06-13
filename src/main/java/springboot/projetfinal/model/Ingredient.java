@@ -1,29 +1,33 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
+@Table(name = "ingredients")
 public class Ingredient {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String name;
-
+	@JsonView(JsonViews.Common.class)
+    private int id;
+	@JsonView(JsonViews.Common.class)
+	private String name;
+	@JsonView(JsonViews.Common.class)
     private double quantity;
-
+	@JsonView(JsonViews.Common.class)
     private String unit; // Exemple : "g", "ml", "pcs"
 
+	@JsonView(JsonViews.IngredientWithItems.class)
 	@ManyToMany
 	@JoinTable(
 			name = "ingredient_item",
 			joinColumns = @JoinColumn(name = "ingredient_id"),
 			inverseJoinColumns = @JoinColumn(name = "item_id")
 	)
-	private Collection<Item> items;
-
+	private Collection<Item> items = new ArrayList<>();
 
 	@Version
 	private int version;
@@ -40,18 +44,16 @@ public class Ingredient {
 		this.unit = unit;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
-
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -59,15 +61,11 @@ public class Ingredient {
 	public double getQuantity() {
 		return quantity;
 	}
-
 	public void setQuantity(double quantity) {
 		this.quantity = quantity;
 	}
 
-	public String getUnit() {
-		return unit;
-	}
-
+	public String getUnit() {return unit;}
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
@@ -79,6 +77,7 @@ public class Ingredient {
 	public void setItems(Collection<Item> items) {
 		this.items = items;
 	}
+
 
 	public void addItem(Item item) {
 		if (!items.contains(item)) {
@@ -97,13 +96,13 @@ public class Ingredient {
 	public int getVersion() {
 		return version;
 	}
-
 	public void setVersion(int version) {
 		this.version = version;
 	}
 
 	@Override
 	public String toString() {
-		return "Ingredient [name=" + name + ", quantity=" + quantity + ", unit=" + unit + "]";
+		return "Ingredient{" + "id=" + id + ", name='" + name + '\'' + ", quantity=" + quantity +
+				", unit='" + unit + '\'' + ", items=" + items + '}';
 	}
 }

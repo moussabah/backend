@@ -17,7 +17,7 @@ public class CustomerRestController {
     @Autowired
     CustomerService service;
 
-    @GetMapping
+    @GetMapping("")
     @JsonView(JsonViews.Common.class)
     public List<Customer> findAll() {
         return service.findAll();

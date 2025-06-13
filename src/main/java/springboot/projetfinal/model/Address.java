@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "addresses")
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(JsonViews.Common.class)
-    private long id;
+    private int id;
     @JsonView(JsonViews.Common.class)
     private int streetNumber;
     @JsonView(JsonViews.Common.class)
@@ -46,11 +47,11 @@ public class Address {
     }
 
     // Getters et Setters
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -82,9 +83,9 @@ public class Address {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
+//    public void setCustomer(Customer customer) {
+//        this.customer = customer;
+//    }
 
     public int getStreetNumber() {
         return streetNumber;
@@ -109,6 +110,15 @@ public class Address {
     public void setVersion(int version) {
         this.version = version;
     }
+
+    // Dans la classe Address
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+        if (customer != null && !customer.getAddresses().contains(this)) {
+            customer.getAddresses().add(this); // Assurer que la relation bidirectionnelle est bien gérée
+        }
+    }
+
 
     // Méthode toString() pour afficher les informations d'une adresse
     @Override

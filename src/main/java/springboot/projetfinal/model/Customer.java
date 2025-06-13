@@ -17,6 +17,7 @@ public class Customer extends Authentification{
     @JsonView(JsonViews.Common.class)
     private String photo;
 
+    @JsonView(JsonViews.CustomerWithOrders.class)
     @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Order> orders = new ArrayList<>();
 
@@ -24,12 +25,18 @@ public class Customer extends Authentification{
     @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Address> addresses = new ArrayList<>();
 
+    @JsonView(JsonViews.CustomerWithReservations.class)
     @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView(JsonViews.CustomerWithItems.class)
+    @ManyToMany
+    @JoinTable(
+            name = "customer_items",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
     private Collection<Item> items = new ArrayList<>();
-
 
     public Customer() {
         super();
@@ -39,14 +46,17 @@ public class Customer extends Authentification{
         super(login, password);
     }
 
-    public Customer(String firstname, String lastname,String login, String password,
-                    Collection<Order> orders, Collection<Address> addresses, Collection<Reservation> reservations) {
+    public Customer(String login, String password, String firstname, String lastname){
         super(login, password);
         this.firstname = firstname;
         this.lastname = lastname;
-        this.orders= orders;
-        this.addresses=addresses;
-        this.reservations=reservations;
+    }
+
+    public Customer(String login, String password, String firstname, String lastname, int phone){
+        super(login, password);
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.phone = phone;
     }
 
     public String getPhoto() {
@@ -83,7 +93,6 @@ public class Customer extends Authentification{
     public int getPhone() {return phone;}
     public void setPhone(int phone) {this.phone = phone;}
 
-
     public void addOrder(Order order) {
         if (!orders.contains(order)) {
             orders.add(order);
@@ -98,13 +107,17 @@ public class Customer extends Authentification{
         }
     }
 
+    // Dans la classe Customer
     public void addAddress(Address address) {
-        if (!addresses.contains(address)) {
-            addresses.add(address);
-            address.setCustomer(this);
+        if (this.addresses == null) {
+            this.addresses = new ArrayList<>();
+        }
+        this.addresses.add(address);
+        if (address.getCustomer() != this) {
+            address.setCustomer(this); // Assurer que la relation bidirectionnelle est correctement définie
         }
     }
-
+    
     public void removeAddress(Address address) {
         if (addresses.contains(address)) {
             addresses.remove(address);
@@ -112,12 +125,11 @@ public class Customer extends Authentification{
         }
     }
 
-
     @Override
     public String toString() {
-        return "Client [firstname=" + firstname + ", lastname=" + lastname + ", Orders=" + orders + "]";
+        return "Customer{" + "firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' +
+                ", phone=" + phone + ", photo='" + photo + '\'' + ", orders=" + orders + ", addresses=" + addresses +
+                ", reservations=" + reservations + ", items=" + items + '}';
     }
-
-
 }
 

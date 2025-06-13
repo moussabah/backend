@@ -4,6 +4,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("Admin")
+@DiscriminatorValue("admin")
 public class Admin extends Authentification{
 }

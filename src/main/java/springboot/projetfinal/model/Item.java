@@ -1,5 +1,6 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import springboot.projetfinal.enums.Category;
 
@@ -13,31 +14,63 @@ import java.util.Collection;
 public class Item {
 
     @Id
+    @JsonView(JsonViews.Common.class)
     private Long ref;
+    @JsonView(JsonViews.Common.class)
     private String name;
+    @JsonView(JsonViews.Common.class)
     private double price;
+    @JsonView(JsonViews.Common.class)
     private String description;
+    @JsonView(JsonViews.Common.class)
     private String pathImg;
+    @JsonView(JsonViews.Common.class)
     private int rate;
+    @JsonView(JsonViews.Common.class)
     private int nbRate;
-
+    @JsonView(JsonViews.ItemWithCategory.class)
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView(JsonViews.ItemWithOrderLine.class)
     private Collection<OrderLine> order_lines = new ArrayList<>();
 
     @ManyToMany(mappedBy = "items")
+    @JsonView(JsonViews.ItemWithIngredients.class)
     private Collection<Ingredient> ingredients = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name="CUSTOMER_FAV_ID")
-    private Customer customer;
+    @ManyToMany (mappedBy = "items")
+    @JsonView(JsonViews.ItemWithCustomer.class)
+    private Collection<Customer> customers = new ArrayList<>();
 
     @Version
     private int version;
 
     public Item() {
         super();
+    }
+
+    public Item(long ref,String name, double price, String description,
+                String pathImg, int rate, int nbRate, Category category) {
+        super();
+        this.ref = ref;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.pathImg = pathImg;
+        this.rate = rate;
+        this.nbRate = nbRate;
+        this.category = category;
+    }
+    public Item(long ref,String name, double price, String description, String pathImg, Category category) {
+        super();
+        this.ref = ref;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.pathImg = pathImg;
+        this.category = category;
     }
 
     public Item(long ref,String name, double price, String description, String pathImg) {
@@ -49,6 +82,21 @@ public class Item {
         this.pathImg = pathImg;
     }
 
+    public Item(long ref,String name, double price, String description) {
+        super();
+        this.ref = ref;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+    }
+
+    public Item(long ref,String name, double price) {
+        super();
+        this.ref = ref;
+        this.name = name;
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }
@@ -56,7 +104,6 @@ public class Item {
     public long getRef() {
         return ref;
     }
-
     public void setRef(Long ref) {
         this.ref = ref;
     }
@@ -64,7 +111,6 @@ public class Item {
     public double getPrice() {
         return price;
     }
-
     public void setPrice(double price) {
         this.price = price;
     }
@@ -72,7 +118,6 @@ public class Item {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -80,9 +125,15 @@ public class Item {
     public String getPathImg() {
         return pathImg;
     }
-
     public void setPathImg(String pathImg) {
         this.pathImg = pathImg;
+    }
+
+    public Collection<Customer> getCustomers() {
+        return customers;
+    }
+    public void setCustomers(Collection<Customer> customers) {
+        this.customers = customers;
     }
 
     public Collection<OrderLine> getOrder_Lines() {
@@ -90,9 +141,9 @@ public class Item {
     }
 
     public void setOrder_Lines(Collection<OrderLine> order_lines) {
-        this.order_lines.clear(); // vide l'ancienne liste
+        this.order_lines.clear();
         if (order_lines != null) {
-            this.order_lines.addAll(order_lines); // ajoute les nouvelles order_lines
+            this.order_lines.addAll(order_lines);
         }
     }
 
@@ -146,14 +197,6 @@ public class Item {
         this.order_lines = order_lines;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
     public void addLigne(OrderLine ligne) {
         if (!order_lines.contains(ligne)) {
             order_lines.add(ligne);
@@ -190,7 +233,6 @@ public class Item {
             removeLine(line);
         }
     }
-
 
     @Override
     public String toString() {

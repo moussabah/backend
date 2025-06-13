@@ -31,8 +31,33 @@ public class CustomerService {
     public void deleteById(int id) {
         repository.deleteById(id);
     }
+
     public Customer update(Customer customer) {
         return repository.save(customer);
     }
 
+    @Transactional
+    public Customer addAddressToCustomer(Integer customerId, Address address) {
+        return repository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
+
+    @Transactional
+    public Customer createCustomerWithAddresses(String firstName, String lastName, List<Address> addresses) {
+        Customer customer = new Customer();
+        customer.setFirstname(firstName);
+        customer.setLastname(lastName);
+        for (Address address : addresses) {
+            customer.addAddress(address);
+        }
+        return customer;
+    }
+
+    @Transactional
+    public Customer createCustomerWithAddress(String firstName, String lastName, Address address) {
+        Customer customer = new Customer();
+        customer.setFirstname(firstName);
+        customer.setLastname(lastName);
+        return customer;
+    }
 }

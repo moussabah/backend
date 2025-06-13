@@ -1,8 +1,10 @@
 package springboot.projetfinal.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springboot.projetfinal.model.Item;
+import springboot.projetfinal.model.JsonViews;
 import springboot.projetfinal.service.ItemService;
 
 import java.util.List;
@@ -15,7 +17,8 @@ public class ItemRestController {
     @Autowired
     ItemService service;
 
-    @GetMapping
+    @GetMapping("")
+    @JsonView(JsonViews.Common.class)
     public List<Item> findAll() {
         return service.findAll();
     }
