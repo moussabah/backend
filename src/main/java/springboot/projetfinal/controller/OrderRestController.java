@@ -29,7 +29,8 @@ public class OrderRestController {
         return service.findById(id).get();
     }
 
-    @PostMapping()
+    @PostMapping("")
+    @JsonView({JsonViews.OrderWithAll.class})
     public Order save(@RequestBody Order order) {
         return service.save(order);
     }
@@ -40,6 +41,7 @@ public class OrderRestController {
     }
 
     @PutMapping("")
+    @JsonView({JsonViews.OrderWithAll.class})
     public Order update(@RequestBody Order order) {
         return service.update(order);
     }

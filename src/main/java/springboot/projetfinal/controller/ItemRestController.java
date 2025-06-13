@@ -28,7 +28,8 @@ public class ItemRestController {
         return service.findById(id).get();
     }
 
-    @PostMapping()
+    @PostMapping("")
+    @JsonView(JsonViews.ItemWithAll.class)
     public Item save(@RequestBody Item item) {
         return service.save(item);
     }
@@ -39,6 +40,7 @@ public class ItemRestController {
     }
 
     @PutMapping("")
+    @JsonView(JsonViews.ItemWithAll.class)
     public Item update(@RequestBody Item item) {
         return service.update(item);
     }

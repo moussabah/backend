@@ -22,6 +22,7 @@ public class IngredientRestController {
     public List<Ingredient> findAll() {
         return service.findAll();
     }
+
     @GetMapping("/{id}")
     @JsonView(JsonViews.IngredientWithAll.class)
     public Ingredient findById(@PathVariable int id) {
@@ -40,6 +41,7 @@ public class IngredientRestController {
     }
 
     @PutMapping("")
+    @JsonView(JsonViews.IngredientWithAll.class)
     public Ingredient update(@RequestBody Ingredient ingredient) {
         return service.update(ingredient);
     }
