@@ -92,11 +92,11 @@ public class ConsoleService implements CommandLineRunner {
         customer2.addAddress(address3);
         customer2.addAddress(address4);
 
-        // Définir le customer dans chaque adresse (pour respecter la relation bidirectionnelle)
-        address1.setCustomer(customer1);
-        address2.setCustomer(customer1);
-        address3.setCustomer(customer2);
-        address4.setCustomer(customer2);
+//        // Définir le customer dans chaque adresse (pour respecter la relation bidirectionnelle)
+//        address1.setCustomer(customer1);
+//        address2.setCustomer(customer1);
+//        address3.setCustomer(customer2);
+//        address4.setCustomer(customer2);
 
         // Sauvegarder les customers et leurs adresses (Cascading des adresses)
         customerRepository.save(customer1);

@@ -18,11 +18,12 @@ public class ReservationRestController {
     ReservationService service;
 
     @GetMapping("")
-    @JsonView(JsonViews.Common.class)
+    @JsonView(JsonViews.ReservationWithAll.class)
     public List<Reservation> findAll() {
         return service.findAll();
     }
     @GetMapping("/{id}")
+    @JsonView(JsonViews.ReservationWithAll.class)
     public Reservation findById(@PathVariable int id) {
         return service.findById(id).get();
     }

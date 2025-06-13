@@ -1,5 +1,4 @@
 package springboot.projetfinal.model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -18,20 +17,19 @@ public class Customer extends Authentification{
     @JsonView(JsonViews.Common.class)
     private String photo;
 
-    @JsonView(JsonViews.CustomerWithOrders.class)
+    @JsonView(JsonViews.CustomerWithAll.class)
     @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Order> orders = new ArrayList<>();
 
-    @JsonBackReference
-    @JsonView(JsonViews.CustomerWithAddress.class)
-    @OneToMany(mappedBy="customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView(JsonViews.CustomerWithAll.class)
+    @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Address> addresses = new ArrayList<>();
 
-    @JsonView(JsonViews.CustomerWithReservations.class)
+    @JsonView(JsonViews.CustomerWithAll.class)
     @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Reservation> reservations = new ArrayList<>();
 
-    @JsonView(JsonViews.CustomerWithItems.class)
+    @JsonView(JsonViews.CustomerWithAll.class)
     @ManyToMany
     @JoinTable(
             name = "customer_items",

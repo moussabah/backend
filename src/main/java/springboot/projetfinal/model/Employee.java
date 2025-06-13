@@ -14,8 +14,7 @@ public class Employee extends Authentification{
     @JsonView(JsonViews.Common.class)
     private String lastname;
 
-    @Version
-    private int version;
+
     public Employee() {
         super();
     }
@@ -54,13 +53,6 @@ public class Employee extends Authentification{
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-    public int getVersion() {
-        return version;
-    }
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
     public String getFullName() {
         return firstname + " " + lastname;
     }

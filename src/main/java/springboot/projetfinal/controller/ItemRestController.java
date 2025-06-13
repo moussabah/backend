@@ -18,11 +18,12 @@ public class ItemRestController {
     ItemService service;
 
     @GetMapping("")
-    @JsonView(JsonViews.Common.class)
+    @JsonView(JsonViews.ItemWithAll.class)
     public List<Item> findAll() {
         return service.findAll();
     }
     @GetMapping("/{id}")
+    @JsonView(JsonViews.ItemWithAll.class)
     public Item findById(@PathVariable int id) {
         return service.findById(id).get();
     }

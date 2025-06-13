@@ -1,5 +1,6 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -20,7 +21,7 @@ public class Ingredient {
 	@JsonView(JsonViews.Common.class)
     private String unit; // Exemple : "g", "ml", "pcs"
 
-	@JsonView(JsonViews.IngredientWithItems.class)
+	@JsonView(JsonViews.IngredientWithAll.class)
 	@ManyToMany
 	@JoinTable(
 			name = "ingredient_item",
@@ -30,6 +31,7 @@ public class Ingredient {
 	private Collection<Item> items = new ArrayList<>();
 
 	@Version
+	@JsonIgnore
 	private int version;
 
 	public Ingredient() {

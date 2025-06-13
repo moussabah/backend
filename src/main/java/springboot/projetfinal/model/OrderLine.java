@@ -1,5 +1,6 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -17,15 +18,16 @@ public class OrderLine {
 
 	@ManyToOne
 	@JoinColumn(name= "ITEM_ID")
-	@JsonView(JsonViews.OrderLineWithItem.class)
+	@JsonView(JsonViews.OrderLineWithAll.class)
 	private Item item;
 
 	@ManyToOne
 	@JoinColumn(name="ORDER_ID")
-	@JsonView(JsonViews.OrderLineWithOrder.class)
+	@JsonView(JsonViews.OrderLineWithAll.class)
 	private Order order;
 
 	@Version
+	@JsonIgnore
 	private int version;
 
 	public OrderLine() {

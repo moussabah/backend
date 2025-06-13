@@ -33,8 +33,14 @@ public class CustomerService {
     }
 
     public Customer update(Customer customer) {
-        return repository.save(customer);
+        if (customer.getAddresses() != null) {
+            for (Address address : customer.getAddresses()) {
+                address.setCustomer(customer); // 🟢 Réassocier le lien
+            }
+        }
+        return repository.save(customer); // ou .saveAndFlush
     }
+
 
     @Transactional
     public Customer addAddressToCustomer(Integer customerId, Address address) {

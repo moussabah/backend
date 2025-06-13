@@ -3,6 +3,7 @@ package springboot.projetfinal.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import springboot.projetfinal.enums.Status;
@@ -19,19 +20,20 @@ public class Order {
     @JsonView(JsonViews.Common.class)
     private double totalPrice;
 
-    @JsonView(JsonViews.OrderWithStatus.class)
+    @JsonView(JsonViews.OrderWithAll.class)
     private Status status;
 
     @OneToMany(mappedBy="order",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonView(JsonViews.OrderWithOrderLines.class)
+    @JsonView(JsonViews.OrderWithAll.class)
     private Collection<OrderLine> order_lines = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name="CUSTOMER_ID")
-    @JsonView(JsonViews.OrderWithCustomer.class)
+    @JsonView(JsonViews.OrderWithAll.class)
     private Customer customer;
 
     @Version
+    @JsonIgnore
     private int version;
 
     public Order() {

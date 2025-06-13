@@ -18,10 +18,12 @@ public class OrderRestController {
     OrderService service;
 
     @GetMapping("")
-    @JsonView(JsonViews.Common.class)
+    @JsonView(JsonViews.OrderWithAll.class)
     public List<Order> findAll() {
         return service.findAll();
     }
+
+    @JsonView({JsonViews.OrderWithAll.class})
     @GetMapping("/{id}")
     public Order findById(@PathVariable int id) {
         return service.findById(id).get();

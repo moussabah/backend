@@ -1,5 +1,7 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,12 +10,16 @@ import jakarta.persistence.*;
 @DiscriminatorColumn(name ="TYPE", discriminatorType = DiscriminatorType.STRING)
 public abstract class Authentification {
 	@Id
+	@JsonView(JsonViews.Common.class)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(unique = true)
+	@JsonView(JsonViews.Common.class)
 	private String login;
+	@JsonView(JsonViews.Common.class)
 	private String password;
 	@Version
+	@JsonIgnore
 	private int version;
 	public int getId() {
 		return id;

@@ -1,5 +1,6 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import springboot.projetfinal.enums.Slot;
@@ -14,7 +15,7 @@ public class Reservation {
     @JsonView(JsonViews.Common.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @JsonView(JsonViews.ReservationWithSlot.class)
+    @JsonView(JsonViews.ReservationWithAll.class)
     private Slot slot;
     @JsonView(JsonViews.Common.class)
     private int nbPersons;
@@ -23,11 +24,13 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name="CUSTOMER_ID")
-    @JsonView(JsonViews.ReservationWithCustomer.class)
+    @JsonView(JsonViews.ReservationWithAll.class)
     private Customer customer;
 
     @Version
+    @JsonIgnore
     private int version;
+
     public Reservation() {
         super();
     }

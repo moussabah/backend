@@ -1,5 +1,6 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import springboot.projetfinal.enums.Category;
@@ -28,23 +29,24 @@ public class Item {
     private int rate;
     @JsonView(JsonViews.Common.class)
     private int nbRate;
-    @JsonView(JsonViews.ItemWithCategory.class)
+    @JsonView(JsonViews.ItemWithAll.class)
     @Enumerated(EnumType.STRING)
     private Category category;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonView(JsonViews.ItemWithOrderLine.class)
+    @JsonView(JsonViews.ItemWithAll.class)
     private Collection<OrderLine> order_lines = new ArrayList<>();
 
     @ManyToMany(mappedBy = "items")
-    @JsonView(JsonViews.ItemWithIngredients.class)
+    @JsonView(JsonViews.ItemWithAll.class)
     private Collection<Ingredient> ingredients = new ArrayList<>();
 
     @ManyToMany (mappedBy = "items")
-    @JsonView(JsonViews.ItemWithCustomer.class)
+    @JsonView(JsonViews.ItemWithAll.class)
     private Collection<Customer> customers = new ArrayList<>();
 
     @Version
+    @JsonIgnore
     private int version;
 
     public Item() {

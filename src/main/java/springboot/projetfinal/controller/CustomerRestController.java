@@ -18,17 +18,18 @@ public class CustomerRestController {
     CustomerService service;
 
     @GetMapping("")
-    @JsonView(JsonViews.Common.class)
+    @JsonView(JsonViews.CustomerWithAll.class)
     public List<Customer> findAll() {
         return service.findAll();
     }
     @GetMapping("/{id}")
-    @JsonView(JsonViews.CustomerWithAddress.class)
+    @JsonView(JsonViews.CustomerWithAll.class)
     public Customer findById(@PathVariable int id) {
         return service.findById(id).get();
     }
 
-    @PostMapping()
+    @PostMapping("")
+    @JsonView(JsonViews.CustomerWithAll.class)
     public Customer save(@RequestBody Customer customer) {
         return service.save(customer);
     }
@@ -39,6 +40,7 @@ public class CustomerRestController {
     }
 
     @PutMapping("")
+    @JsonView(JsonViews.CustomerWithAll.class)
     public Customer update(@RequestBody Customer customer) {
         return service.update(customer);
     }

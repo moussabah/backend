@@ -1,6 +1,6 @@
 package springboot.projetfinal.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -23,21 +23,19 @@ public class Address {
     @JsonView(JsonViews.Common.class)
     private String country;
 
-    @JsonManagedReference
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
-    @JsonView(JsonViews.AddressWithCustomer.class)
+    @JsonView(JsonViews.AddressWithAll.class)
     private Customer customer;
 
     @Version
+    @JsonIgnore
     private int version;
 
-    // Constructeur par défaut
     public Address() {
         super();
     }
 
-    // Constructeur avec paramètres
     public Address(String street, String city, String postalCode, Customer customer, int streetNumber, String country) {
         super();
         this.street = street;
@@ -84,11 +82,6 @@ public class Address {
     public Customer getCustomer() {
         return customer;
     }
-
-//    public void setCustomer(Customer customer) {
-//        this.customer = customer;
-//    }
-
     public int getStreetNumber() {
         return streetNumber;
     }
@@ -113,16 +106,13 @@ public class Address {
         this.version = version;
     }
 
-    // Dans la classe Address
     public void setCustomer(Customer customer) {
         this.customer = customer;
         if (customer != null && !customer.getAddresses().contains(this)) {
-            customer.getAddresses().add(this); // Assurer que la relation bidirectionnelle est bien gérée
+            customer.getAddresses().add(this);
         }
     }
 
-
-    // Méthode toString() pour afficher les informations d'une adresse
     @Override
     public String toString() {
         return "Address [id=" + id + ", street=" + street + ", city=" + city + ", postalCode=" + postalCode + "]";

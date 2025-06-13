@@ -18,16 +18,18 @@ public class IngredientRestController {
     IngredientService service;
 
     @GetMapping("")
-    @JsonView(JsonViews.Common.class)
+    @JsonView(JsonViews.IngredientWithAll.class)
     public List<Ingredient> findAll() {
         return service.findAll();
     }
     @GetMapping("/{id}")
+    @JsonView(JsonViews.IngredientWithAll.class)
     public Ingredient findById(@PathVariable int id) {
         return service.findById(id).get();
     }
 
-    @PostMapping()
+    @PostMapping("")
+    @JsonView(JsonViews.IngredientWithAll.class)
     public Ingredient save(@RequestBody Ingredient ingredient) {
         return service.save(ingredient);
     }
