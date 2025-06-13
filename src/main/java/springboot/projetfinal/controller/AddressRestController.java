@@ -8,6 +8,7 @@ import springboot.projetfinal.model.JsonViews;
 import springboot.projetfinal.service.AddressService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -18,19 +19,21 @@ public class AddressRestController {
     AddressService service;
 
     @GetMapping
-    @JsonView(JsonViews.Common.class)
+    @JsonView(JsonViews.AddressWithCustomer.class)
     public List<Address> findAll() {
         return service.findAll();
     }
     @GetMapping("/{id}")
+    @JsonView(JsonViews.Common.class)
     public Address findById(@PathVariable int id) {
         return service.findById(id).get();
     }
 
-    @PostMapping()
+    @PostMapping("")
     public Address save(@RequestBody Address address) {
         return service.save(address);
     }
+
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {

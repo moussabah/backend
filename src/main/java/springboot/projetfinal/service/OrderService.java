@@ -1,9 +1,6 @@
 package springboot.projetfinal.service;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springboot.projetfinal.enums.Status;
 import springboot.projetfinal.model.Order;
 import springboot.projetfinal.repo.OrderRepository;
 

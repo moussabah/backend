@@ -1,4 +1,5 @@
 package springboot.projetfinal.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -13,7 +14,7 @@ public class Customer extends Authentification{
     @JsonView(JsonViews.Common.class)
     private String lastname;
     @JsonView(JsonViews.Common.class)
-    private int phone;
+    private String phone;
     @JsonView(JsonViews.Common.class)
     private String photo;
 
@@ -21,8 +22,9 @@ public class Customer extends Authentification{
     @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Order> orders = new ArrayList<>();
 
+    @JsonBackReference
     @JsonView(JsonViews.CustomerWithAddress.class)
-    @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy="customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Address> addresses = new ArrayList<>();
 
     @JsonView(JsonViews.CustomerWithReservations.class)
@@ -52,7 +54,7 @@ public class Customer extends Authentification{
         this.lastname = lastname;
     }
 
-    public Customer(String login, String password, String firstname, String lastname, int phone){
+    public Customer(String login, String password, String firstname, String lastname, String phone){
         super(login, password);
         this.firstname = firstname;
         this.lastname = lastname;
@@ -90,8 +92,8 @@ public class Customer extends Authentification{
     public Collection<Reservation> getReservations() {return reservations;}
     public void setReservations(Collection<Reservation> reservations) {this.reservations = reservations;}
 
-    public int getPhone() {return phone;}
-    public void setPhone(int phone) {this.phone = phone;}
+    public String getPhone() {return phone;}
+    public void setPhone(String phone) {this.phone = phone;}
 
     public void addOrder(Order order) {
         if (!orders.contains(order)) {
@@ -117,7 +119,7 @@ public class Customer extends Authentification{
             address.setCustomer(this); // Assurer que la relation bidirectionnelle est correctement définie
         }
     }
-    
+
     public void removeAddress(Address address) {
         if (addresses.contains(address)) {
             addresses.remove(address);

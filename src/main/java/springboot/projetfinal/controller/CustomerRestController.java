@@ -23,6 +23,7 @@ public class CustomerRestController {
         return service.findAll();
     }
     @GetMapping("/{id}")
+    @JsonView(JsonViews.CustomerWithAddress.class)
     public Customer findById(@PathVariable int id) {
         return service.findById(id).get();
     }

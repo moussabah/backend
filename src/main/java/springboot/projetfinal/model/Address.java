@@ -1,5 +1,6 @@
 package springboot.projetfinal.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -22,8 +23,9 @@ public class Address {
     @JsonView(JsonViews.Common.class)
     private String country;
 
-    @ManyToOne
-    @JoinColumn(name="CUSTOMER_ID")
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CUSTOMER_ID")
     @JsonView(JsonViews.AddressWithCustomer.class)
     private Customer customer;
 
