@@ -104,7 +104,7 @@ public class ConsoleService implements CommandLineRunner {
 
         // Créer des items (Pizza Margherita et Pizza Pepperoni)
         Item item1 = new Item();
-        item1.setRef(101L);
+        item1.setRef(101);
         item1.setName("Pizza Margherita");
         item1.setPrice(12.50);
         item1.setDescription("Delicious Margherita pizza with mozzarella and basil");
@@ -114,7 +114,7 @@ public class ConsoleService implements CommandLineRunner {
         item1.setCategory(Category.MAIN);
 
         Item item2 = new Item();
-        item2.setRef(102L);
+        item2.setRef(102);
         item2.setName("Pizza Pepperoni");
         item2.setPrice(14.00);
         item2.setDescription("Pepperoni pizza with mozzarella and spicy pepperoni");
