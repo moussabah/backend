@@ -13,8 +13,7 @@ public class Employee extends Authentification{
     private String firstname;
     @JsonView(JsonViews.Common.class)
     private String lastname;
-    @JsonView(JsonViews.Common.class)
-    private String email;
+
 
 
     public Employee() {
@@ -31,13 +30,7 @@ public class Employee extends Authentification{
         super(login, password);
         this.active = active;
     }
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public boolean isActive() {
         return active;

@@ -14,8 +14,7 @@ public class Customer extends Authentification{
     private String lastname;
     @JsonView(JsonViews.Common.class)
     private String phone;
-    @JsonView(JsonViews.Common.class)
-    private String email;
+
     @JsonView(JsonViews.Common.class)
     private String photo;
 
@@ -61,13 +60,7 @@ public class Customer extends Authentification{
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getPhoto() {
         return photo;
