@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import springboot.projetfinal.enums.Category;
+import springboot.projetfinal.enums.Slot;
 import springboot.projetfinal.enums.Status;
 import springboot.projetfinal.model.*;
 import springboot.projetfinal.repo.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class ConsoleService implements CommandLineRunner {
@@ -214,8 +216,180 @@ public class ConsoleService implements CommandLineRunner {
         orderRepository.save(order2);
     }
 
+    //ne fonctionne pas
+
+    public void testInsert3() {
+
+        // Création des ingrédients
+        Ingredient tomate = new Ingredient("tomate", 100, "gr");
+        Ingredient fromage = new Ingredient("fromage", 100, "gr");
+
+        // Création des items
+        Item pizza = new Item(2001, "pizza", 15.0, "pizza marguerita", "");
+
+        Item salade = new Item(1001, "salade", 10.0, "salade verte", "");
+
+        pizza.setCategory(Category.MAIN);
+        salade.setCategory(Category.STARTER);
+
+        System.out.println(" add ingredient a item ");
+        pizza.addIngredient(tomate);
+        pizza.addIngredient(fromage);
+        salade.addIngredient(tomate);
+
+        System.out.println(" save item ");
+        itemRepository.save(pizza);
+        itemRepository.save(salade);
+
+        System.out.println(" save ingredient ");
+        ingredientRepository.save(tomate);
+        ingredientRepository.save(fromage);
+
+
+    }
+
+
+    public void testInsert1() {
+
+        // Création des ingrédients
+        Ingredient tomate = new Ingredient("tomate", 100, "gr");
+        Ingredient fromage = new Ingredient("fromage", 100, "gr");
+        Ingredient lait = new Ingredient("lait", 100, "ml");
+        Ingredient patate = new Ingredient("pomme de terre", 100, "gr");
+
+
+
+        // Création des items
+        Item pizza = new Item(2001, "pizza", 15.0, "pizza marguerita", "");
+        Item fritte = new Item(2002, "fritte", 10.0, "frittes belges", "");
+        Item salade = new Item(1001, "salade", 10.0, "salade verte", "");
+        Item mousse = new Item(1002, "mousse", 5.0, "mousse au chocolat", "");
+
+        pizza.setCategory(Category.MAIN);
+        fritte.setCategory(Category.MAIN);
+        salade.setCategory(Category.STARTER);
+        mousse.setCategory(Category.DESSERT);
+
+        pizza.addIngredient(tomate);
+        pizza.addIngredient(fromage);
+        fritte.addIngredient(patate);
+        salade.addIngredient(tomate);
+
+        tomate.addItem(pizza);
+        tomate.addItem(salade);
+        patate.addItem(fritte);
+        fromage.addItem(pizza);
+
+
+        itemRepository.save(pizza);
+        itemRepository.save(fritte);
+        itemRepository.save(salade);
+        itemRepository.save(mousse);
+
+        ingredientRepository.save(tomate);
+        ingredientRepository.save(fromage);
+        ingredientRepository.save(lait);
+        ingredientRepository.save(patate);
+
+
+
+
+
+        // Création des adresses
+        Address address1 = new Address("123 Main St", "Springfield", "12345", null, 10, "USA");
+        Address address2 = new Address("456 Oak Ave", "Shelbyville", "67890", null, 15, "USA");
+        Address address3 = new Address("789 Maple Rd", "Capital City", "54321", null, 20, "USA");
+        Address address4 = new Address("987 Pine St", "Ogdenville", "98765", null, 25, "USA");
+
+
+        // Création des clients
+        Customer customer1 = new Customer();
+        customer1.setFirstname("John");
+        customer1.setLastname("Doe");
+
+        Customer customer2 = new Customer();
+        customer2.setFirstname("Jane");
+        customer2.setLastname("Dali");
+
+        Customer customer3 = new Customer();
+        customer3.setFirstname("Jonathan");
+        customer3.setLastname("Dule");
+
+        // Ajout des adresses
+        customer1.addAddress(address1);
+        customer2.addAddress(address2);
+        customer3.addAddress(address3);
+        customer3.addAddress(address4);
+
+
+        customerRepository.save(customer1);
+        customerRepository.save(customer2);
+        customerRepository.save(customer3);
+
+
+    }
+
+    public void testInsert2() {
+
+
+        //  recupération des items
+        Item pizza = itemRepository.findById(2001).get();
+        Item fritte = itemRepository.findById(2002).get();
+        Item salade = itemRepository.findById(1001).get();
+        Item mousse = itemRepository.findById(1002).get();
+
+        // Création des OrderLines
+        OrderLine ol1 = new OrderLine(pizza, 10);
+        OrderLine ol2 = new OrderLine(fritte, 10);
+        OrderLine ol3 = new OrderLine(mousse, 5);
+        OrderLine ol4 = new OrderLine(pizza, 1);
+        OrderLine ol5 = new OrderLine(salade, 1);
+
+        // Création des Orders
+        Order order1 = new Order();
+        order1.addLine(ol1);
+        order1.addLine(ol2);
+
+        Order order2 = new Order();
+        order2.addLine(ol3);
+
+        Order order3 = new Order();
+        order3.addLine(ol4);
+        order3.addLine(ol5);
+
+        //  recupération des customer
+        Customer customer1 = customerRepository.findById(1).get();
+        Customer customer2 = customerRepository.findById(2).get();
+        Customer customer3 = customerRepository.findById(3).get();
+
+
+        order1.setCustomer(customer1);
+        order2.setCustomer(customer1);
+        order3.setCustomer(customer2);
+
+
+        orderRepository.save(order1);
+        orderRepository.save(order2);
+        orderRepository.save(order3);
+
+
+
+
+        // Création et sauvegarde de la réservation
+        Reservation resa1 = new Reservation(Slot.AFTERNOON, 2, new Date());
+        resa1.setCustomer(customer2);
+
+        reservationRepository.save(resa1);
+    }
+
+
+
+
+
+
     @Override
     public void run(String... args) throws Exception {
-        //testInsert();
+        testInsert1();
+        testInsert2();
     }
 }

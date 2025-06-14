@@ -22,6 +22,7 @@ public class ItemRestController {
     public List<Item> findAll() {
         return service.findAll();
     }
+
     @GetMapping("/{id}")
     @JsonView(JsonViews.ItemWithAll.class)
     public Item findById(@PathVariable int id) {
@@ -29,6 +30,7 @@ public class ItemRestController {
     }
 
     @PostMapping()
+    @JsonView(JsonViews.ItemWithAll.class)
     public Item save(@RequestBody Item item) {
         return service.save(item);
     }
@@ -39,6 +41,7 @@ public class ItemRestController {
     }
 
     @PutMapping("")
+    @JsonView(JsonViews.ItemWithAll.class)
     public Item update(@RequestBody Item item) {
         return service.update(item);
     }

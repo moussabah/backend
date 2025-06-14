@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springboot.projetfinal.model.Address;
 import springboot.projetfinal.model.Customer;
+import springboot.projetfinal.model.Order;
+import springboot.projetfinal.model.Reservation;
 import springboot.projetfinal.repo.CustomerRepository;
 
 import java.util.List;
@@ -25,6 +27,22 @@ public class CustomerService {
     }
 
     public Customer save(Customer customer) {
+        if (customer.getAddresses() != null) {
+            for (Address address : customer.getAddresses()) {
+                address.setCustomer(customer); // 🟢 Réassocier le lien
+            }
+        }
+        if (customer.getOrders() != null) {
+            for (Order order : customer.getOrders()) {
+                order.setCustomer(customer); // 🟢 Réassocier le lien
+            }
+        }
+        if (customer.getReservations() != null) {
+            for (Reservation reservation : customer.getReservations()) {
+                reservation.setCustomer(customer); // 🟢 Réassocier le lien
+            }
+        }
+
         return repository.save(customer);
     }
 
@@ -38,6 +56,17 @@ public class CustomerService {
                 address.setCustomer(customer); // 🟢 Réassocier le lien
             }
         }
+        if (customer.getOrders() != null) {
+            for (Order order : customer.getOrders()) {
+                order.setCustomer(customer); // 🟢 Réassocier le lien
+            }
+        }
+        if (customer.getReservations() != null) {
+            for (Reservation reservation : customer.getReservations()) {
+                reservation.setCustomer(customer); // 🟢 Réassocier le lien
+            }
+        }
+
         return repository.save(customer); // ou .saveAndFlush
     }
 

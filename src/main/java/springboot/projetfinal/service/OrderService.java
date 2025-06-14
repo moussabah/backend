@@ -1,7 +1,7 @@
 package springboot.projetfinal.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springboot.projetfinal.model.Order;
+import springboot.projetfinal.model.*;
 import springboot.projetfinal.repo.OrderRepository;
 
 import java.util.List;
@@ -22,14 +22,28 @@ public class OrderService {
     }
 
     public Order save(Order order) {
+
+        if (order.getOrder_lines() != null) {
+            for (OrderLine orderlines : order.getOrder_Lines()) {
+                orderlines.setOrder(order); // 🟢 Réassocier le lien
+            }
+        }
         return repository.save(order);
     }
 
     public void deleteById(int id) {
         repository.deleteById(id);
     }
+
+
     public Order update(Order order) {
-        return repository.save(order);
+        if (order.getOrder_lines() != null) {
+            for (OrderLine orderlines : order.getOrder_Lines()) {
+                orderlines.setOrder(order); // 🟢 Réassocier le lien
+            }
+        }
+
+        return repository.save(order); // ou .saveAndFlush
     }
 //
 //    public List<Order> findAllByOrderByOrderNumberAsc(){

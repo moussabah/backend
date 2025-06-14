@@ -18,17 +18,18 @@ public class OrderLineRestController {
     OrderLineService service;
 
     @GetMapping("")
-    @JsonView(JsonViews.OrderWithAll.class)
+    @JsonView(JsonViews.OrderLineWithAll.class)
     public List<OrderLine> findAll() {
         return service.findAll();
     }
 
-    @JsonView({JsonViews.OrderWithAll.class})
+    @JsonView({JsonViews.OrderLineWithAll.class})
     @GetMapping("/{id}")
     public OrderLine findById(@PathVariable int id) {
         return service.findById(id).get();
     }
 
+    @JsonView({JsonViews.OrderLineWithAll.class})
     @PostMapping("")
     public OrderLine save(@RequestBody OrderLine line) {
         return service.save(line);
@@ -39,6 +40,7 @@ public class OrderLineRestController {
         service.deleteById(id);
     }
 
+    @JsonView({JsonViews.OrderLineWithAll.class})
     @PutMapping("")
     public OrderLine update(@RequestBody OrderLine line) {
         return service.update(line);

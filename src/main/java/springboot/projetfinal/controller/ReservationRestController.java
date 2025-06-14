@@ -22,6 +22,7 @@ public class ReservationRestController {
     public List<Reservation> findAll() {
         return service.findAll();
     }
+
     @GetMapping("/{id}")
     @JsonView(JsonViews.ReservationWithAll.class)
     public Reservation findById(@PathVariable int id) {
@@ -29,6 +30,7 @@ public class ReservationRestController {
     }
 
     @PostMapping()
+    @JsonView(JsonViews.ReservationWithAll.class)
     public Reservation save(@RequestBody Reservation reservation) {
         return service.save(reservation);
     }
@@ -39,6 +41,7 @@ public class ReservationRestController {
     }
 
     @PutMapping("")
+    @JsonView(JsonViews.ReservationWithAll.class)
     public Reservation update(@RequestBody Reservation reservation) {
         return service.update(reservation);
     }

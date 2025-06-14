@@ -22,6 +22,7 @@ public class IngredientRestController {
     public List<Ingredient> findAll() {
         return service.findAll();
     }
+
     @GetMapping("/{id}")
     @JsonView(JsonViews.IngredientWithAll.class)
     public Ingredient findById(@PathVariable int id) {
@@ -35,6 +36,7 @@ public class IngredientRestController {
     }
 
     @DeleteMapping("/{id}")
+    @JsonView(JsonViews.IngredientWithAll.class)
     public void delete(@PathVariable int id) {
         service.deleteById(id);
     }
@@ -45,6 +47,7 @@ public class IngredientRestController {
     }
 
     @GetMapping("findbyname/{name}")
+    @JsonView(JsonViews.IngredientWithAll.class)
     public Ingredient findByName(@PathVariable String name){
         return service.findAll().stream().filter(i -> i.getName().equals(name)).findFirst().get();
     }

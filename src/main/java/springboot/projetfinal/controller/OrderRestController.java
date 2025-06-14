@@ -29,6 +29,8 @@ public class OrderRestController {
         return service.findById(id).get();
     }
 
+
+    @JsonView({JsonViews.OrderWithAll.class})
     @PostMapping()
     public Order save(@RequestBody Order order) {
         return service.save(order);
@@ -39,6 +41,7 @@ public class OrderRestController {
         service.deleteById(id);
     }
 
+    @JsonView({JsonViews.OrderWithAll.class})
     @PutMapping("")
     public Order update(@RequestBody Order order) {
         return service.update(order);
