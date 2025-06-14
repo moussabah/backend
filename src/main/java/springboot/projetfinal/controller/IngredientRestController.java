@@ -42,6 +42,7 @@ public class IngredientRestController {
     }
 
     @PutMapping("")
+    @JsonView(JsonViews.IngredientWithAll.class)
     public Ingredient update(@RequestBody Ingredient ingredient) {
         return service.update(ingredient);
     }
