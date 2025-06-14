@@ -10,7 +10,7 @@ import springboot.projetfinal.service.CustomerService;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/customers")
 public class CustomerRestController {
 

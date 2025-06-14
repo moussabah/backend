@@ -12,7 +12,7 @@ import springboot.projetfinal.service.AddressService;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/addresses")
 public class AddressRestController {
 

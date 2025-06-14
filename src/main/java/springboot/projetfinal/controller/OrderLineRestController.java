@@ -10,7 +10,7 @@ import springboot.projetfinal.service.OrderLineService;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/order_lines")
 public class OrderLineRestController {
 
