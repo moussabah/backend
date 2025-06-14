@@ -18,9 +18,9 @@ public abstract class Authentification {
 	private String login;
 	@JsonView(JsonViews.Common.class)
 	private String password;
+	@JsonView(JsonViews.Common.class)
 	@Version
-	@JsonIgnore
-	private int version;
+	protected int version;
 	public int getId() {
 		return id;
 	}

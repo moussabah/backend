@@ -16,6 +16,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @JsonView(JsonViews.ReservationWithAll.class)
+    @Enumerated(EnumType.STRING)
     private Slot slot;
     @JsonView(JsonViews.Common.class)
     private int nbPersons;
@@ -26,9 +27,8 @@ public class Reservation {
     @JoinColumn(name="CUSTOMER_ID")
     @JsonView(JsonViews.ReservationWithAll.class)
     private Customer customer;
-
+    @JsonView(JsonViews.Common.class)
     @Version
-    @JsonIgnore
     private int version;
 
     public Reservation() {

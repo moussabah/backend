@@ -37,16 +37,21 @@ public class Item {
     @JsonView(JsonViews.ItemWithAll.class)
     private Collection<OrderLine> order_lines = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "items")
+
+    @ManyToMany
+    @JoinTable(
+            name = "item_ingredient",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
     @JsonView(JsonViews.ItemWithAll.class)
     private Collection<Ingredient> ingredients = new ArrayList<>();
 
     @ManyToMany (mappedBy = "items")
     @JsonView(JsonViews.ItemWithAll.class)
     private Collection<Customer> customers = new ArrayList<>();
-
+    @JsonView(JsonViews.Common.class)
     @Version
-    @JsonIgnore
     private int version;
 
     public Item() {

@@ -2,6 +2,8 @@ package springboot.projetfinal.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springboot.projetfinal.model.Customer;
+import springboot.projetfinal.model.Ingredient;
 import springboot.projetfinal.model.Item;
 import springboot.projetfinal.repo.ItemRepository;
 
@@ -27,6 +29,14 @@ public class ItemService {
     }
 
     public void deleteById(int id) {
+        Item item = repository.findById(id).orElseThrow();
+        for (Customer customer : item.getCustomers() ){
+            customer.getItems().remove(item);
+        }
+        for (Ingredient ingredient : item.getIngredients() ){
+            ingredient.getItems().remove(item);
+        }
+
         repository.deleteById(id);
     }
     public Item update(Item item) {

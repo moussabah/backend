@@ -280,16 +280,17 @@ public class ConsoleService implements CommandLineRunner {
         patate.addItem(fritte);
         fromage.addItem(pizza);
 
+        ingredientRepository.save(tomate);
+        ingredientRepository.save(fromage);
+        ingredientRepository.save(lait);
+        ingredientRepository.save(patate);
 
         itemRepository.save(pizza);
         itemRepository.save(fritte);
         itemRepository.save(salade);
         itemRepository.save(mousse);
 
-        ingredientRepository.save(tomate);
-        ingredientRepository.save(fromage);
-        ingredientRepository.save(lait);
-        ingredientRepository.save(patate);
+
 
 
 

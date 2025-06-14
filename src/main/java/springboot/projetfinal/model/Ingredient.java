@@ -22,16 +22,10 @@ public class Ingredient {
     private String unit; // Exemple : "g", "ml", "pcs"
 
 	@JsonView(JsonViews.IngredientWithAll.class)
-	@ManyToMany
-	@JoinTable(
-			name = "ingredient_item",
-			joinColumns = @JoinColumn(name = "ingredient_id"),
-			inverseJoinColumns = @JoinColumn(name = "item_id")
-	)
+	@ManyToMany(mappedBy = "ingredients")
 	private Collection<Item> items = new ArrayList<>();
-
+	@JsonView(JsonViews.Common.class)
 	@Version
-	@JsonIgnore
 	private int version;
 
 	public Ingredient() {

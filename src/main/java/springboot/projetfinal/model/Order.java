@@ -21,6 +21,7 @@ public class Order {
     private double totalPrice;
 
     @JsonView(JsonViews.OrderWithAll.class)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @OneToMany(mappedBy="order",cascade = CascadeType.ALL, orphanRemoval = true)
@@ -31,9 +32,8 @@ public class Order {
     @JoinColumn(name="CUSTOMER_ID")
     @JsonView(JsonViews.OrderWithAll.class)
     private Customer customer;
-
+    @JsonView(JsonViews.Common.class)
     @Version
-    @JsonIgnore
     private int version;
 
     public Order() {

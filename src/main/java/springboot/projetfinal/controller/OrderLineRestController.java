@@ -29,7 +29,7 @@ public class OrderLineRestController {
         return service.findById(id).get();
     }
 
-    @JsonView({JsonViews.OrderLineWithAll.class})
+
     @PostMapping("")
     @JsonView({JsonViews.OrderLineWithAll.class})
     public OrderLine save(@RequestBody OrderLine line) {
@@ -41,7 +41,7 @@ public class OrderLineRestController {
         service.deleteById(id);
     }
 
-    @JsonView({JsonViews.OrderLineWithAll.class})
+
     @PutMapping("")
     @JsonView({JsonViews.OrderLineWithAll.class})
     public OrderLine update(@RequestBody OrderLine line) {
