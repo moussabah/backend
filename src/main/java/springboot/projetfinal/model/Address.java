@@ -27,9 +27,8 @@ public class Address {
     @JoinColumn(name = "CUSTOMER_ID")
     @JsonView(JsonViews.AddressWithAll.class)
     private Customer customer;
-
+    @JsonView(JsonViews.Common.class)
     @Version
-    @JsonIgnore
     private int version;
 
     public Address() {

@@ -15,6 +15,7 @@ public class Employee extends Authentification{
     private String lastname;
 
 
+
     public Employee() {
         super();
     }
@@ -29,6 +30,7 @@ public class Employee extends Authentification{
         super(login, password);
         this.active = active;
     }
+
 
     public boolean isActive() {
         return active;

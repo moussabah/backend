@@ -25,9 +25,8 @@ public class OrderLine {
 	@JoinColumn(name="ORDER_ID")
 	@JsonView(JsonViews.OrderLineWithAll.class)
 	private Order order;
-
+	@JsonView(JsonViews.Common.class)
 	@Version
-	@JsonIgnore
 	private int version;
 
 	public OrderLine() {

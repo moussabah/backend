@@ -10,7 +10,7 @@ import springboot.projetfinal.service.OrderLineService;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/order_lines")
 public class OrderLineRestController {
 
@@ -29,7 +29,7 @@ public class OrderLineRestController {
         return service.findById(id).get();
     }
 
-    @JsonView({JsonViews.OrderLineWithAll.class})
+
     @PostMapping("")
     public OrderLine save(@RequestBody OrderLine line) {
         return service.save(line);
@@ -40,7 +40,7 @@ public class OrderLineRestController {
         service.deleteById(id);
     }
 
-    @JsonView({JsonViews.OrderLineWithAll.class})
+
     @PutMapping("")
     public OrderLine update(@RequestBody OrderLine line) {
         return service.update(line);
