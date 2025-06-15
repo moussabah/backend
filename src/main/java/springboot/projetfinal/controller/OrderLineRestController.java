@@ -31,7 +31,6 @@ public class OrderLineRestController {
 
     @JsonView({JsonViews.OrderLineWithAll.class})
     @PostMapping("")
-    @JsonView({JsonViews.OrderLineWithAll.class})
     public OrderLine save(@RequestBody OrderLine line) {
         return service.save(line);
     }
@@ -43,7 +42,6 @@ public class OrderLineRestController {
 
     @JsonView({JsonViews.OrderLineWithAll.class})
     @PutMapping("")
-    @JsonView({JsonViews.OrderLineWithAll.class})
     public OrderLine update(@RequestBody OrderLine line) {
         return service.update(line);
     }
