@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import springboot.projetfinal.enums.Category;
 import springboot.projetfinal.model.Ingredient;
 import springboot.projetfinal.model.Item;
+import springboot.projetfinal.model.Reservation;
 import springboot.projetfinal.repo.IngredientRepository;
 import springboot.projetfinal.repo.ItemRepository;
 
@@ -35,13 +36,14 @@ public class ItemController {
         ModelAndView modelAndView = new ModelAndView("item/findAll", "liste", itemRepository.findAll());
         return modelAndView;
     }
+
+    @GetMapping("/detail/{ref}")
+    public ModelAndView detail(@PathVariable int ref) {
+        Item item = itemRepository.findById(ref).orElseThrow();
+        return new ModelAndView("item/detail", "item", item);
+    }
+
     // AFFICHER FORMULAIRE CREATE
-  /*  @GetMapping("/create")
-    public ModelAndView showCreateForm() {
-        return new ModelAndView("item/create", "item", new Item());
-    }*/
-
-
     @GetMapping("/create")
     public ModelAndView showCreateForm() {
         ModelAndView mv = new ModelAndView("item/create");

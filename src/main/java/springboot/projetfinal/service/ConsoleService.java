@@ -12,6 +12,7 @@ import springboot.projetfinal.repo.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ConsoleService implements CommandLineRunner {
@@ -305,14 +306,20 @@ public class ConsoleService implements CommandLineRunner {
 
         // Création des clients
         Customer customer1 = new Customer();
+        customer1.setLogin("John@gmail.com");
+        customer1.setPassword("1234");
         customer1.setFirstname("John");
         customer1.setLastname("Doe");
 
         Customer customer2 = new Customer();
+        customer1.setLogin("Jane@gmail.com");
+        customer1.setPassword("1234");
         customer2.setFirstname("Jane");
         customer2.setLastname("Dali");
 
         Customer customer3 = new Customer();
+        customer1.setLogin("Jonathan@gmail.com");
+        customer1.setPassword("1234");
         customer3.setFirstname("Jonathan");
         customer3.setLastname("Dule");
 
@@ -322,6 +329,8 @@ public class ConsoleService implements CommandLineRunner {
         customer3.addAddress(address3);
         customer3.addAddress(address4);
 
+        customer1.setItems(List.of(pizza, fritte));
+        customer3.setItems(List.of(pizza, fritte,salade));
 
         customerRepository.save(customer1);
         customerRepository.save(customer2);
@@ -390,7 +399,7 @@ public class ConsoleService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //testInsert1();
-        //testInsert2();
+        testInsert1();
+        testInsert2();
     }
 }
