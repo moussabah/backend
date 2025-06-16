@@ -4,7 +4,6 @@ public enum Status {
     INCOMPLETE,
     PENDING,
     SHIPPED,
-    VALIDATED,
     DELIVERED,
     CANCELLED
 }

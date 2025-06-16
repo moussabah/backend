@@ -112,7 +112,7 @@ public class OrderLine {
 	@Override
 	public String toString() {
 		return "LigneOrder [id=" + id + ", quantity=" + quantity + ", line_price=" + line_price + ", item="
-				+ item + ", Order=" + order + "]";
+				+ item + "]";
 	}
 
 }

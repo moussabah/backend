@@ -39,13 +39,13 @@ public class Order {
     public Order() {
         super();
         this.totalPrice = 0;
-        this.status = Status.PENDING;
+        this.status = Status.INCOMPLETE;
     }
 
     public Order(Customer customer) {
         super();
         this.customer = customer;
-        this.status = Status.PENDING;
+        this.status = Status.INCOMPLETE;
     }
 
     public int getId() {
@@ -131,6 +131,6 @@ public class Order {
     @Override
     public String toString() {
         return "Order{" + "id=" + id + ", totalPrice=" + totalPrice + ", status=" + status +
-                ", order_lines=" + order_lines + ", customer=" + customer + '}';
+                ", order_lines=" + order_lines + '}';
     }
 }

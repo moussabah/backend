@@ -17,13 +17,10 @@ public class Reservation {
     private int id;
     @JsonView(JsonViews.ReservationWithAll.class)
     @Enumerated(EnumType.STRING)
-    @Column(name = "slot")
     private Slot slot;
     @JsonView(JsonViews.Common.class)
     private int nbPersons;
     @JsonView(JsonViews.Common.class)
-    @Column(name = "date")
-    @Temporal(TemporalType.DATE)
     private Date date;
 
     @ManyToOne
