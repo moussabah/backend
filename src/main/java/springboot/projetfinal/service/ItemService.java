@@ -39,7 +39,29 @@ public class ItemService {
 
         repository.deleteById(id);
     }
-    public Item update(Item item) {
-        return repository.save(item);
+
+    public Item update(Item updatedItem) {
+        Optional<Item> optionalItem = repository.findById(updatedItem.getRef());
+        if (optionalItem.isEmpty()) {
+            throw new RuntimeException("Item non trouvé avec ref: " + updatedItem.getRef());
+        }
+
+        Item existingItem = optionalItem.get();
+        // 🔁 Met à jour uniquement le rating
+        updateRating(existingItem, updatedItem.getRate());
+        return repository.save(existingItem);
+
     }
+
+    // ✅ Méthode de mise à jour du rating
+    private void updateRating(Item item, int newRating) {
+        if (newRating > 0) {
+            int totalRate = item.getRate() * item.getNbRate();
+            int newNbRate = item.getNbRate() + 1;
+            int newRate = Math.round((float)(totalRate + newRating) / newNbRate);
+            item.setNbRate(newNbRate);
+            item.setRate(newRate);
+        }
+    }
+
 }

@@ -1,6 +1,5 @@
 package springboot.projetfinal.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -53,7 +52,6 @@ public abstract class Authentification {
 		this.login = login;
 		this.password = password;
 	}
-
 
 	@Override
 	public String toString() {
