@@ -39,13 +39,13 @@ public class Order {
     public Order() {
         super();
         this.totalPrice = 0;
-        this.status = Status.INCOMPLETE;
+        this.status = Status.PENDING;
     }
 
     public Order(Customer customer) {
         super();
         this.customer = customer;
-        this.status = Status.INCOMPLETE;
+        this.status = Status.PENDING;
     }
 
     public int getId() {
