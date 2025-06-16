@@ -1,6 +1,4 @@
 package springboot.projetfinal.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -9,23 +7,26 @@ public class OrderLine {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonView(JsonViews.Common.class)
+	@JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
 	private int id;
-	@JsonView(JsonViews.Common.class)
+
+	@JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
 	private int quantity;
-	@JsonView(JsonViews.Common.class)
+
+	@JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
 	private double line_price;
 
 	@ManyToOne
-	@JoinColumn(name= "ITEM_ID")
+	@JoinColumn(name = "ITEM_ID")
 	@JsonView(JsonViews.OrderLineWithAll.class)
 	private Item item;
 
 	@ManyToOne
-	@JoinColumn(name="ORDER_ID")
+	@JoinColumn(name = "ORDER_ID")
 	@JsonView(JsonViews.OrderLineWithAll.class)
 	private Order order;
-	@JsonView(JsonViews.Common.class)
+
+	@JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
 	@Version
 	private int version;
 

@@ -12,4 +12,6 @@ public class JsonViews {
     public static class ReservationWithAll extends Common{}
     public static class OrderLineWithAll extends Common{}
 
+    public static class CustomerWithOrdersWithOrderLines extends Common{}
+
 }

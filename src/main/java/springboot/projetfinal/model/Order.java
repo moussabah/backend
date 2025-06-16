@@ -8,31 +8,32 @@ import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import springboot.projetfinal.enums.Status;
 
-
 @Entity
 @Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(JsonViews.Common.class)
+    @JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     private int id;
-    @JsonView(JsonViews.Common.class)
+
+    @JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     private double totalPrice;
 
-    @JsonView(JsonViews.OrderWithAll.class)
+    @JsonView({JsonViews.OrderWithAll.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy="order",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonView(JsonViews.OrderWithAll.class)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView({JsonViews.OrderWithAll.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     private Collection<OrderLine> order_lines = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name="CUSTOMER_ID")
+    @JoinColumn(name = "CUSTOMER_ID")
     @JsonView(JsonViews.OrderWithAll.class)
     private Customer customer;
-    @JsonView(JsonViews.Common.class)
+
+    @JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     @Version
     private int version;
 

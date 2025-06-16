@@ -4,30 +4,32 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 @Entity
 @DiscriminatorValue("Customer")
-public class Customer extends Authentification{
-    @JsonView(JsonViews.Common.class)
+public class Customer extends Authentification {
+
+    @JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     private String firstname;
-    @JsonView(JsonViews.Common.class)
+
+    @JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     private String lastname;
-    @JsonView(JsonViews.Common.class)
+
+    @JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     private String phone;
 
-    @JsonView(JsonViews.Common.class)
+    @JsonView({JsonViews.Common.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     private String photo;
 
-    @JsonView(JsonViews.CustomerWithAll.class)
-    @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView({JsonViews.CustomerWithAll.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Order> orders = new ArrayList<>();
 
     @JsonView(JsonViews.CustomerWithAll.class)
-    @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Address> addresses = new ArrayList<>();
 
     @JsonView(JsonViews.CustomerWithAll.class)
-    @OneToMany(mappedBy="customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Reservation> reservations = new ArrayList<>();
 
     @JsonView(JsonViews.CustomerWithAll.class)

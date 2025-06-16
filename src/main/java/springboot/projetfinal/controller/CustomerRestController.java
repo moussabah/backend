@@ -68,4 +68,12 @@ public class CustomerRestController {
         return service.loadCustomerPhoto(filename);
     }
 
+    /**
+     * ✅ Nouveau endpoint enrichi : Customer + Orders + OrderLines
+     */
+    @GetMapping("/withOrdersLines")
+    @JsonView(JsonViews.CustomerWithOrdersWithOrderLines.class)
+    public List<Customer> getCustomersWithOrdersAndOrderLines() {
+        return service.findAll();
+    }
 }
