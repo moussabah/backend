@@ -16,7 +16,8 @@ public abstract class Authentification {
 	@Column(unique = true)
 	@JsonView(JsonViews.Common.class)
 	private String login; //login=email
-	@JsonView(JsonViews.Common.class)
+	//@JsonView(JsonViews.Common.class)
+	//@JsonIgnore
 	private String password;
 	@JsonView(JsonViews.Common.class)
 	@Version
