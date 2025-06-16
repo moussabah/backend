@@ -390,7 +390,7 @@ public class ConsoleService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        testInsert1();
-        testInsert2();
+        //testInsert1();
+        //testInsert2();
     }
 }
