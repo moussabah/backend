@@ -16,26 +16,6 @@ import java.util.Date;
 @Service
 public class ConsoleService implements CommandLineRunner {
 
-//    @Autowired
-//    private CustomerRepository customerRepository;
-//
-//    public void testInsert1() {
-//        Address address1 = new Address("123 Main St", "Springfield", "12345", null, 10, "USA");
-//        Address address2 = new Address("456 Oak Ave", "Shelbyville", "67890", null, 15, "USA");
-//
-//        Customer customer = new Customer();
-//        customer.setFirstname("John");
-//        customer.setLastname("Doe");
-//
-//        customer.addAddress(address1);
-//        customer.addAddress(address2);
-//
-//        address1.setCustomer(customer);
-//        address2.setCustomer(customer);
-//
-//        customerRepository.save(customer);
-//    }
-
     @Autowired
     private ItemRepository itemRepository;
 
@@ -216,8 +196,6 @@ public class ConsoleService implements CommandLineRunner {
         orderRepository.save(order2);
     }
 
-    //ne fonctionne pas
-
     public void testInsert3() {
 
         // Création des ingrédients
@@ -250,14 +228,11 @@ public class ConsoleService implements CommandLineRunner {
 
 
     public void testInsert1() {
-
         // Création des ingrédients
         Ingredient tomate = new Ingredient("tomate", 100, "gr");
         Ingredient fromage = new Ingredient("fromage", 100, "gr");
         Ingredient lait = new Ingredient("lait", 100, "ml");
         Ingredient patate = new Ingredient("pomme de terre", 100, "gr");
-
-
 
         // Création des items
         Item pizza = new Item(2001, "pizza", 15.0, "pizza marguerita", "");
@@ -265,36 +240,35 @@ public class ConsoleService implements CommandLineRunner {
         Item salade = new Item(1001, "salade", 10.0, "salade verte", "");
         Item mousse = new Item(1002, "mousse", 5.0, "mousse au chocolat", "");
 
+        // Catégorisation
         pizza.setCategory(Category.MAIN);
         fritte.setCategory(Category.MAIN);
         salade.setCategory(Category.STARTER);
         mousse.setCategory(Category.DESSERT);
 
+        // Association ingrédients <-> items
         pizza.addIngredient(tomate);
         pizza.addIngredient(fromage);
         fritte.addIngredient(patate);
         salade.addIngredient(tomate);
 
+        // Ingrédients liés aux items
         tomate.addItem(pizza);
         tomate.addItem(salade);
         patate.addItem(fritte);
         fromage.addItem(pizza);
 
+        // Sauvegarde des ingrédients
         ingredientRepository.save(tomate);
         ingredientRepository.save(fromage);
         ingredientRepository.save(lait);
         ingredientRepository.save(patate);
 
+        // Sauvegarde des items
         itemRepository.save(pizza);
         itemRepository.save(fritte);
         itemRepository.save(salade);
         itemRepository.save(mousse);
-
-
-
-
-
-
 
         // Création des adresses
         Address address1 = new Address("123 Main St", "Springfield", "12345", null, 10, "USA");
@@ -302,19 +276,10 @@ public class ConsoleService implements CommandLineRunner {
         Address address3 = new Address("789 Maple Rd", "Capital City", "54321", null, 20, "USA");
         Address address4 = new Address("987 Pine St", "Ogdenville", "98765", null, 25, "USA");
 
-
-        // Création des clients
-        Customer customer1 = new Customer();
-        customer1.setFirstname("John");
-        customer1.setLastname("Doe");
-
-        Customer customer2 = new Customer();
-        customer2.setFirstname("Jane");
-        customer2.setLastname("Dali");
-
-        Customer customer3 = new Customer();
-        customer3.setFirstname("Jonathan");
-        customer3.setLastname("Dule");
+        // Création des clients avec login/password
+        Customer customer1 = new Customer("john.doe@example.com", "password123", "John", "Doe", "0600000001");
+        Customer customer2 = new Customer("jane.dali@example.com", "secure456", "Jane", "Dali", "0600000002");
+        Customer customer3 = new Customer("jonathan.dule@example.com", "abc123", "Jonathan", "Dule", "0600000003");
 
         // Ajout des adresses
         customer1.addAddress(address1);
@@ -322,18 +287,14 @@ public class ConsoleService implements CommandLineRunner {
         customer3.addAddress(address3);
         customer3.addAddress(address4);
 
-
+        // Sauvegarde des clients
         customerRepository.save(customer1);
         customerRepository.save(customer2);
         customerRepository.save(customer3);
-
-
     }
 
     public void testInsert2() {
-
-
-        //  recupération des items
+        // Récupération des items
         Item pizza = itemRepository.findById(2001).get();
         Item fritte = itemRepository.findById(2002).get();
         Item salade = itemRepository.findById(1001).get();
@@ -346,7 +307,7 @@ public class ConsoleService implements CommandLineRunner {
         OrderLine ol4 = new OrderLine(pizza, 1);
         OrderLine ol5 = new OrderLine(salade, 1);
 
-        // Création des Orders
+        // Création des commandes
         Order order1 = new Order();
         order1.addLine(ol1);
         order1.addLine(ol2);
@@ -358,39 +319,31 @@ public class ConsoleService implements CommandLineRunner {
         order3.addLine(ol4);
         order3.addLine(ol5);
 
-        //  recupération des customer
+        // Récupération des clients
         Customer customer1 = customerRepository.findById(1).get();
         Customer customer2 = customerRepository.findById(2).get();
         Customer customer3 = customerRepository.findById(3).get();
 
-
+        // Association des commandes aux clients
         order1.setCustomer(customer1);
         order2.setCustomer(customer1);
         order3.setCustomer(customer2);
 
-
+        // Sauvegarde des commandes
         orderRepository.save(order1);
         orderRepository.save(order2);
         orderRepository.save(order3);
 
-
-
-
-        // Création et sauvegarde de la réservation
+        // Création et sauvegarde d'une réservation
         Reservation resa1 = new Reservation(Slot.AFTERNOON, 2, new Date());
         resa1.setCustomer(customer2);
 
         reservationRepository.save(resa1);
     }
 
-
-
-
-
-
     @Override
     public void run(String... args) throws Exception {
-        //testInsert1();
-        //testInsert2();
+        testInsert1();
+        testInsert2();
     }
 }
