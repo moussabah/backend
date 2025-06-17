@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import springboot.projetfinal.enums.Category;
+import springboot.projetfinal.enums.Role;
 import springboot.projetfinal.enums.Slot;
 import springboot.projetfinal.enums.Status;
 import springboot.projetfinal.model.*;
@@ -39,6 +40,9 @@ public class ConsoleService implements CommandLineRunner {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -217,38 +221,6 @@ public class ConsoleService implements CommandLineRunner {
         orderRepository.save(order2);
     }
 
-    //ne fonctionne pas
-
-    public void testInsert3() {
-
-        // Création des ingrédients
-        Ingredient tomate = new Ingredient("tomate", 100, "gr");
-        Ingredient fromage = new Ingredient("fromage", 100, "gr");
-
-        // Création des items
-        Item pizza = new Item(2001, "pizza", 15.0, "pizza marguerita", "");
-
-        Item salade = new Item(1001, "salade", 10.0, "salade verte", "");
-
-        pizza.setCategory(Category.MAIN);
-        salade.setCategory(Category.STARTER);
-
-        System.out.println(" add ingredient a item ");
-        pizza.addIngredient(tomate);
-        pizza.addIngredient(fromage);
-        salade.addIngredient(tomate);
-
-        System.out.println(" save item ");
-        itemRepository.save(pizza);
-        itemRepository.save(salade);
-
-        System.out.println(" save ingredient ");
-        ingredientRepository.save(tomate);
-        ingredientRepository.save(fromage);
-
-
-    }
-
 
     public void testInsert1() {
 
@@ -391,7 +363,12 @@ public class ConsoleService implements CommandLineRunner {
 
         reservationRepository.save(resa1);
     }
-
+    public void testInsert3(){
+        Employee employee1 = new Employee("admin@gmail.com","admin","admin","admin",true, Role.ADMIN);
+        Employee employee2 = new Employee("emp@gmail.com","emp","emp","emp",true, Role.EMPLOYEE);
+        employeeRepository.save(employee1);
+        employeeRepository.save(employee2);
+    }
 
 
 
@@ -399,7 +376,8 @@ public class ConsoleService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //testInsert1();
-        //testInsert2();
+        testInsert1();
+        testInsert2();
+        testInsert3();
     }
 }
