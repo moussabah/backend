@@ -18,7 +18,7 @@ public class OrderLine {
 
 	@ManyToOne
 	@JoinColumn(name = "ITEM_ID")
-	@JsonView(JsonViews.OrderLineWithAll.class)
+	@JsonView({JsonViews.OrderLineWithAll.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
 	private Item item;
 
 	@ManyToOne
