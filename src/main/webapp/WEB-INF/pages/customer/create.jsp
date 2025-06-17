@@ -13,7 +13,7 @@
     <h2 class="mb-4">Créer un nouveau client</h2>
 
     <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-        <!-- Infos perso -->
+        <!-- Informations personnelles -->
         <div class="mb-3">
             <label for="lastname" class="form-label">Nom</label>
             <input type="text" class="form-control" id="lastname" name="lastname" required>
@@ -30,41 +30,44 @@
         </div>
 
         <div class="mb-3">
+            <label for="login" class="form-label">Identifiant (login)</label>
+            <input type="text" class="form-control" id="login" name="login" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+
+        <div class="mb-3">
             <label for="imageFile" class="form-label">Photo</label>
             <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*">
         </div>
 
-        <!-- Adresse : simple formulaire d'ajout inline -->
+        <!-- Adresse unique -->
         <fieldset class="border p-3 mb-4">
-            <legend class="w-auto px-2">Ajouter une adresse</legend>
+            <legend class="w-auto px-2">Adresse</legend>
+            <div class="mb-3">
+                <label for="streetNumber" class="form-label">Numéro de rue</label>
+                <input type="number" class="form-control" id="streetNumber" name="addresses[0].streetNumber" placeholder="Ex: 12">
+            </div>
             <div class="mb-3">
                 <label for="street" class="form-label">Rue</label>
-                <input type="text" class="form-control" id="street" name="address.street" placeholder="Ex: 12 rue de Paris">
+                <input type="text" class="form-control" id="street" name="addresses[0].street" placeholder="Ex: rue de Paris">
             </div>
             <div class="mb-3">
                 <label for="city" class="form-label">Ville</label>
-                <input type="text" class="form-control" id="city" name="address.city" placeholder="Ex: Paris">
+                <input type="text" class="form-control" id="city" name="addresses[0].city" placeholder="Ex: Paris">
             </div>
             <div class="mb-3">
-                <label for="zipcode" class="form-label">Code postal</label>
-                <input type="text" class="form-control" id="zipcode" name="address.zipcode" placeholder="Ex: 75000">
+                <label for="postalCode" class="form-label">Code postal</label>
+                <input type="text" class="form-control" id="postalCode" name="addresses[0].postalCode" placeholder="Ex: 75000">
+            </div>
+            <div class="mb-3">
+                <label for="country" class="form-label">Pays</label>
+                <input type="text" class="form-control" id="country" name="addresses[0].country" placeholder="Ex: France">
             </div>
         </fieldset>
-
-        <!-- Items favoris -->
-        <div class="mb-3">
-            <label class="form-label">Articles favoris</label>
-            <div>
-                <c:forEach items="${items}" var="item">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="itemIds" value="${item.ref}" id="item-${item.ref}">
-                        <label class="form-check-label" for="item-${item.ref}">
-                            ${item.name}
-                        </label>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
 
         <button type="submit" class="btn btn-success">Créer</button>
         <a href="${pageContext.request.contextPath}/mvcCustomers/findall" class="btn btn-secondary ms-2">Annuler</a>

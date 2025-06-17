@@ -12,7 +12,13 @@
 <div class="container mt-5">
     <h2 class="mb-4">Modifier le client</h2>
 
-    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+   <form method="post"
+         action="${pageContext.request.contextPath}/mvcCustomers/update"
+         enctype="multipart/form-data"
+         class="needs-validation"
+         novalidate>
+
+
 
         <!-- ID et version cachés -->
         <input type="hidden" name="id" value="${customer.id}" />
@@ -49,62 +55,35 @@
             <div class="form-text">Laissez vide pour conserver la photo actuelle.</div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Articles favoris</label>
-            <div class="form-check">
-                <c:forEach items="${items}" var="item">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="itemIds" value="${item.ref}" id="item-${item.ref}"
-                            <c:if test="${customer.items.contains(item)}">checked</c:if> />
-                        <label class="form-check-label" for="item-${item.ref}">
-                            ${item.name}
-                        </label>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-
         <fieldset class="border p-3 mb-4">
-            <legend class="w-auto px-2">Adresses existantes</legend>
+            <legend class="w-auto px-2">Adresse</legend>
             <c:forEach items="${customer.addresses}" var="address" varStatus="status">
                 <div class="border rounded p-3 mb-3">
+                    <!-- Champs cachés pour id et version -->
                     <input type="hidden" name="addresses[${status.index}].id" value="${address.id}" />
+                    <input type="hidden" name="addresses[${status.index}].version" value="${address.version}" />
+
+                    <div class="mb-3">
+                        <label for="streetNumber-${status.index}" class="form-label">Numéro de rue</label>
+                        <input type="text" class="form-control" id="streetNumber-${status.index}" name="addresses[${status.index}].streetNumber" value="${address.streetNumber}" required />
+                    </div>
+
                     <div class="mb-3">
                         <label for="street-${status.index}" class="form-label">Rue</label>
                         <input type="text" class="form-control" id="street-${status.index}" name="addresses[${status.index}].street" value="${address.street}" required />
                     </div>
+
                     <div class="mb-3">
                         <label for="city-${status.index}" class="form-label">Ville</label>
                         <input type="text" class="form-control" id="city-${status.index}" name="addresses[${status.index}].city" value="${address.city}" required />
                     </div>
+
                     <div class="mb-3">
                         <label for="postalCode-${status.index}" class="form-label">Code postal</label>
-                       <input type="text" class="form-control" id="postalCode-${status.index}" name="addresses[${status.index}].postalCode" value="${address.postalCode}" required />
-
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="delete-${status.index}" name="addresses[${status.index}].delete" value="true" />
-                        <label class="form-check-label" for="delete-${status.index}">Supprimer cette adresse</label>
+                        <input type="text" class="form-control" id="postalCode-${status.index}" name="addresses[${status.index}].postalCode" value="${address.postalCode}" required />
                     </div>
                 </div>
             </c:forEach>
-        </fieldset>
-
-        <fieldset class="border p-3 mb-4">
-            <legend class="w-auto px-2">Ajouter une nouvelle adresse</legend>
-            <div class="mb-3">
-                <label for="newStreet" class="form-label">Rue</label>
-                <input type="text" class="form-control" id="newStreet" name="newAddress.street" placeholder="Ex: 12 rue de Paris" />
-            </div>
-            <div class="mb-3">
-                <label for="newCity" class="form-label">Ville</label>
-                <input type="text" class="form-control" id="newCity" name="newAddress.city" placeholder="Ex: Paris" />
-            </div>
-            <div class="mb-3">
-                <label for="newPostalCode" class="form-label">Code postal</label>
-               <input type="text" class="form-control" id="newPostalCode" name="newAddress.postalCode" placeholder="Ex: 75000" />
-
-            </div>
         </fieldset>
 
         <button type="submit" class="btn btn-primary">Mettre à jour</button>

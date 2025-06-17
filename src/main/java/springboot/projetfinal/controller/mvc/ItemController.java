@@ -54,10 +54,17 @@ public class ItemController {
     }
 
     // TRAITER CREATE
-
     @PostMapping("/create")
     public String createItem(@ModelAttribute Item item,
+                             @RequestParam("ingredientIds") List<Integer> ingredientIds,
                              @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+        // Associer les ingrédients sélectionnés
+        if (ingredientIds != null && !ingredientIds.isEmpty()) {
+            List<Ingredient> ingredients = ingredientRepository.findAllById(ingredientIds);
+            item.setIngredients(ingredients);
+        }
+
+        // Upload de l'image
         if (!imageFile.isEmpty()) {
             String extension = FilenameUtils.getExtension(imageFile.getOriginalFilename());
             String filename = UUID.randomUUID().toString() + "." + extension;
@@ -68,9 +75,11 @@ public class ItemController {
             imageFile.transferTo(uploadPath.resolve(filename));
             item.setPathImg(filename);
         }
+
         itemRepository.save(item);
         return "redirect:/mvcItems/findall";
     }
+
 
 
     // AFFICHER FORMULAIRE UPDATE

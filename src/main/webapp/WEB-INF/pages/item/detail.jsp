@@ -11,7 +11,26 @@
     <p><strong>Nom :</strong> ${item.name}</p>
     <p><strong>Description :</strong> ${item.description}</p>
     <p><strong>Prix :</strong> ${item.price} €</p>
-    <p><strong>Type :</strong> ${item.type}</p>
+    <p><strong>Type :</strong> ${item.category}</p>
+
+    <!-- Affichage de la photo si elle existe -->
+    <c:if test="${not empty item.pathImg}">
+        <div class="mb-3">
+            <img src="${pageContext.request.contextPath}/images/${item.pathImg}" alt="Photo de ${item.name}" class="img-thumbnail" style="max-width: 300px;" />
+        </div>
+    </c:if>
+
+    <!-- Liste des ingrédients -->
+    <c:if test="${not empty item.ingredients}">
+        <div class="mb-3">
+            <strong>Ingrédients :</strong>
+            <ul>
+                <c:forEach var="ingredient" items="${item.ingredients}">
+                    <li>${ingredient.name}</li>
+                </c:forEach>
+            </ul>
+        </div>
+    </c:if>
 
     <a href="${pageContext.request.contextPath}/mvcCustomers/findall" class="btn btn-secondary">Retour</a>
 </div>
