@@ -9,7 +9,6 @@ import springboot.projetfinal.model.Customer;
 import springboot.projetfinal.model.JsonViews;
 import springboot.projetfinal.service.CustomerService;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +19,14 @@ public class CustomerRestController {
 
     @Autowired
     CustomerService service;
+
+    @PostMapping("/register")
+    public ResponseEntity<Customer> register(@RequestBody Map<String, String> credentials) {
+        String login = credentials.get("login");
+        String password = credentials.get("password");
+        Customer customer = service.register(login, password);
+        return ResponseEntity.ok(customer);
+    }
 
     @GetMapping("")
     @JsonView(JsonViews.CustomerWithAll.class)

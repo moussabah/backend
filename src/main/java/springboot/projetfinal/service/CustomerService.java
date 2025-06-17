@@ -2,28 +2,18 @@ package springboot.projetfinal.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import springboot.projetfinal.model.Address;
-import springboot.projetfinal.model.Customer;
-import springboot.projetfinal.model.Order;
-import springboot.projetfinal.model.Reservation;
+import springboot.projetfinal.model.*;
 import springboot.projetfinal.repo.CustomerRepository;
 
-
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.List;
 import java.util.Optional;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Service
 public class CustomerService {
@@ -31,82 +21,23 @@ public class CustomerService {
     @Autowired
     private CustomerRepository repository;
 
-    public List<Customer> findAll() {
-        return repository.findAll();
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public Optional<Customer> findById(int id) {
-        return repository.findById(id);
-    }
+    @Autowired
+    private JwtService jwtService;
+
+    // 🔐 Login sécurisé
     @Transactional
-    public Customer save(Customer customer) {
-        if (customer.getAddresses() != null) {
-            for (Address address : customer.getAddresses()) {
-                address.setCustomer(customer); // 🟢 Réassocier le lien
-            }
-        }
-        if (customer.getOrders() != null) {
-            for (Order order : customer.getOrders()) {
-                order.setCustomer(customer); // 🟢 Réassocier le lien
-            }
-        }
-        if (customer.getReservations() != null) {
-            for (Reservation reservation : customer.getReservations()) {
-                reservation.setCustomer(customer); // 🟢 Réassocier le lien
-            }
+    public String loginAndReturnJwt(String login, String rawPassword) {
+        Customer customer = repository.findByLogin(login)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Identifiants invalides"));
+
+        if (!passwordEncoder.matches(rawPassword, customer.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Identifiants invalides");
         }
 
-        return repository.save(customer);
-    }
-    @Transactional
-    public void deleteById(int id) {
-        repository.deleteById(id);
-    }
-    @Transactional
-    public Customer update(Customer customer) {
-        if (customer.getAddresses() != null) {
-            for (Address address : customer.getAddresses()) {
-                address.setCustomer(customer); // 🟢 Réassocier le lien
-            }
-        }
-        if (customer.getOrders() != null) {
-            for (Order order : customer.getOrders()) {
-                order.setCustomer(customer); // 🟢 Réassocier le lien
-            }
-        }
-        if (customer.getReservations() != null) {
-            for (Reservation reservation : customer.getReservations()) {
-                reservation.setCustomer(customer); // 🟢 Réassocier le lien
-            }
-        }
-
-        return repository.save(customer); // ou .saveAndFlush
-    }
-
-
-    @Transactional
-    public Customer addAddressToCustomer(Integer customerId, Address address) {
-        return repository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-    }
-
-    @Transactional
-    public Customer createCustomerWithAddresses(String firstName, String lastName, List<Address> addresses) {
-        Customer customer = new Customer();
-        customer.setFirstname(firstName);
-        customer.setLastname(lastName);
-        for (Address address : addresses) {
-            customer.addAddress(address);
-        }
-        return customer;
-    }
-
-    @Transactional
-    public Customer createCustomerWithAddress(String firstName, String lastName, Address address) {
-        Customer customer = new Customer();
-        customer.setFirstname(firstName);
-        customer.setLastname(lastName);
-        return customer;
+        return jwtService.generateToken(customer.getLogin());
     }
 
     @Transactional
@@ -115,6 +46,80 @@ public class CustomerService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Identifiants invalides"));
     }
 
+
+    // 📝 Inscription avec vérification du doublon
+    @Transactional
+    public Customer register(String login, String rawPassword) {
+        if (repository.findByLogin(login).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Login déjà utilisé");
+        }
+        String hashedPassword = passwordEncoder.encode(rawPassword);
+        Customer customer = new Customer(login, hashedPassword);
+        return repository.save(customer);
+    }
+
+    // 🔍 Récupération client
+    public List<Customer> findAll() {
+        return repository.findAll();
+    }
+
+    public Optional<Customer> findById(int id) {
+        return repository.findById(id);
+    }
+
+    // 💾 Sauvegarde et mise à jour
+    @Transactional
+    public Customer save(Customer customer) {
+        prepareCustomerForSaveOrUpdate(customer);
+        return repository.save(customer);
+    }
+
+    @Transactional
+    public Customer update(Customer customer) {
+        prepareCustomerForSaveOrUpdate(customer);
+        return repository.save(customer);
+    }
+
+    // 🔧 Préparation des objets liés
+    private void prepareCustomerForSaveOrUpdate(Customer customer) {
+        if (customer.getPassword() != null) {
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        }
+
+        if (customer.getAddresses() != null) {
+            for (Address address : customer.getAddresses()) {
+                address.setCustomer(customer);
+            }
+        }
+        if (customer.getOrders() != null) {
+            for (Order order : customer.getOrders()) {
+                order.setCustomer(customer);
+            }
+        }
+        if (customer.getReservations() != null) {
+            for (Reservation reservation : customer.getReservations()) {
+                reservation.setCustomer(customer);
+            }
+        }
+    }
+
+    // ❌ Suppression
+    @Transactional
+    public void deleteById(int id) {
+        repository.deleteById(id);
+    }
+
+    // 🏠 Ajouter une adresse à un client
+    @Transactional
+    public Customer addAddressToCustomer(Integer customerId, Address address) {
+        Customer customer = repository.findById(customerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client non trouvé"));
+
+        customer.addAddress(address);
+        return repository.save(customer);
+    }
+
+    // 🖼️ Upload d'image
     @Transactional
     public ResponseEntity<String> uploadCustomerPhoto(MultipartFile file) {
         if (file.isEmpty()) {
@@ -134,12 +139,11 @@ public class CustomerService {
 
             return ResponseEntity.ok(file.getOriginalFilename());
         } catch (IOException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'upload");
         }
     }
 
-
+    // 🖼️ Chargement d'image
     @Transactional
     public ResponseEntity<byte[]> loadCustomerPhoto(String filename) {
         String uploadDir = "src/main/resources/static/images/customers/";
@@ -157,5 +161,4 @@ public class CustomerService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 }

@@ -2,6 +2,8 @@ package springboot.projetfinal.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import springboot.projetfinal.enums.Category;
 import springboot.projetfinal.enums.Slot;
@@ -345,5 +347,16 @@ public class ConsoleService implements CommandLineRunner {
     public void run(String... args) throws Exception {
 //        testInsert1();
 //        testInsert2();
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        String raw = "password123";
+        String encoded = encoder.encode(raw);
+        System.out.println("le mot de passe " + encoded); // Ça doit afficher une chaîne longue et salée (hash)
     }
+
+//    public static void main(String[] args) {
+//        PasswordEncoder encoder = new BCryptPasswordEncoder();
+//        String raw = "password123";
+//        String encoded = encoder.encode(raw);
+//        System.out.println(encoded); // Ça doit afficher une chaîne longue et salée (hash)
+//    }
 }
