@@ -76,4 +76,10 @@ public class CustomerRestController {
     public List<Customer> getCustomersWithOrdersAndOrderLines() {
         return service.findAll();
     }
+
+    @GetMapping("withOrdersLines/{id}")
+    @JsonView(JsonViews.CustomerWithOrdersWithOrderLines.class)
+    public Customer findByIdWithOrderLines(@PathVariable int id) {
+        return service.findById(id).get();
+    }
 }
