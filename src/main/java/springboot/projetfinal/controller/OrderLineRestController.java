@@ -29,12 +29,12 @@ public class OrderLineRestController {
         return service.findById(id).get();
     }
 
-
+    @JsonView({JsonViews.OrderLineWithAll.class})
     @PostMapping("")
     public OrderLine save(@RequestBody OrderLine line) {
         return service.save(line);
     }
-    @JsonView({JsonViews.OrderLineWithAll.class})
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         service.deleteById(id);
