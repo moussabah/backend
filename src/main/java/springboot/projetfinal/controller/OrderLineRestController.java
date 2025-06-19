@@ -34,13 +34,13 @@ public class OrderLineRestController {
     public OrderLine save(@RequestBody OrderLine line) {
         return service.save(line);
     }
-
+    @JsonView({JsonViews.OrderLineWithAll.class})
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         service.deleteById(id);
     }
 
-
+    @JsonView({JsonViews.OrderLineWithAll.class})
     @PutMapping("")
     public OrderLine update(@RequestBody OrderLine line) {
         return service.update(line);

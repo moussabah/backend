@@ -2,6 +2,7 @@ package springboot.projetfinal.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import springboot.projetfinal.enums.Role;
 
 @Entity
 @DiscriminatorValue("Employee")
@@ -13,29 +14,38 @@ public class Employee extends Authentification{
     private String firstname;
     @JsonView(JsonViews.Common.class)
     private String lastname;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 
 
     public Employee() {
         super();
     }
-    public Employee(String login, String password, String firstname, String lastname,boolean active) {
+    public Employee(String login, String password, String firstname, String lastname, boolean active, Role role) {
         super(login, password);
         this.active = active;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.role = role;
     }
 
-    public Employee(String login, String password, boolean active) {
+    public Employee(String login, String password , boolean active , Role role) {
         super(login, password);
         this.active = active;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
     }
@@ -71,7 +81,7 @@ public class Employee extends Authentification{
         return "Employee{" +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
-                "active=" + active +
+                "role=" + role +
                 '}';
     }
 }
