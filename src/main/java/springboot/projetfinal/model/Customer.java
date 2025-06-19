@@ -24,11 +24,11 @@ public class Customer extends Authentification {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Order> orders = new ArrayList<>();
 
-    @JsonView(JsonViews.CustomerWithAll.class)
+    @JsonView({JsonViews.CustomerWithAll.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Address> addresses = new ArrayList<>();
 
-    @JsonView(JsonViews.CustomerWithAll.class)
+    @JsonView({JsonViews.CustomerWithAll.class, JsonViews.CustomerWithOrdersWithOrderLines.class})
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Reservation> reservations = new ArrayList<>();
 
